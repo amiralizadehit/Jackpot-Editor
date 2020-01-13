@@ -1,0 +1,59 @@
+button.litebutton {
+  background: -webkit-linear-gradient(#32302d, #4b4947) repeat scroll 0 0
+    transparent;
+  background: -moz-linear-gradient(#32302d, #4b4947) repeat scroll 0 0
+    transparent;
+  background: linear-gradient(#32302d, #4b4947) repeat scroll 0 0 transparent;
+  border: 0 none;
+  border-radius: 2px 2px 2px 2px;
+  box-shadow: 0 1px 0 #5b5957 inset, 0 -1px 0 black, 0 1px 0 black,
+    -1px 0 0 black, 1px 0 0 black, 0 1px 1px #111111;
+  color: #ccc;
+  display: inline-block;
+  margin: 2px;
+  padding: 2px;
+  text-shadow: 0 1px 1px black;
+  vertical-align: top;
+  width: 31.33%;
+  height: 25px;
+  font-size: 1.3em !important;
+}
+
+.litepanel .panel-header,
+.litedialog .panel-header {
+  font-size: 1em;
+  padding: 0.6em 0 0 0.6em;
+  background-color: #778;
+  background-image: linear-gradient(right, #555, #333);
+  background-image: -moz-linear-gradient(right, #555, #333);
+  background-image: -webkit-linear-gradient(right, #555, #333);
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: white;
+  width: 100%;
+  min-height: 20px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  overflow: hidden;
+  height: 30px;
+}
+.litemenubar li {
+  font-size: 14px;
+  color: #999;
+  display: inline-block;
+  min-width: 50px;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-left: 12px;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+}
+.litemenubar li:hover {
+  background-color: #4a5484;
+  color: #fff;
+}
