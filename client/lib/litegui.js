@@ -2974,9 +2974,9 @@ LiteGUI.Console = Console;
 			throw "cannot split twice";
 
 		//create areas
-		var area1 = new LiteGUI.Area({ content_id: this.content.id });
+		var area1 = new LiteGUI.Area({ content_id: this.content.id, immediateResize: true });
 		area1.root.style.display = "inline-block";
-		var area2 = new LiteGUI.Area();
+		var area2 = new LiteGUI.Area({immediateResize: true});
 		area2.root.style.display = "inline-block";
 
 		var splitinfo = "";
@@ -2984,7 +2984,7 @@ LiteGUI.Console = Console;
 		var dynamic_section = null;
 		if(editable)
 		{
-			splitinfo = " - " + (Area.splitbar_size + 2) +"px"; //2 px margin ¿?
+			splitinfo = " - " + (Area.splitbar_size + 2) +"px"; //2 px margin ï¿½?
 			splitbar = document.createElement("div");
 			splitbar.className = "litesplitbar " + direction;
 			if(direction == "vertical")
@@ -4132,7 +4132,7 @@ LiteGUI.Console = Console;
 		{
 			if(options.size)
 			{
-				content.style.overflow = "auto";
+				content.style.overflow = options.overflow || "auto";
 				if(options.size == "full")
 				{
 					content.style.width = "100%";
@@ -4149,7 +4149,7 @@ LiteGUI.Console = Console;
 		{
 			if(options.size)
 			{
-				content.style.overflow = "auto";
+				content.style.overflow = options.overflow || "auto";
 				if(options.size == "full")
 				{
 					content.style.height = "100%";

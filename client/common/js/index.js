@@ -1,7 +1,11 @@
- "use strict";
+window.onload = ()=>{
+    "use strict";
 
-  LiteGUI.init();
-  let mainView = new Jackpot_MainLayout();
+    LiteGUI.init();
+    let mainView = new Jackpot_MainLayout();
+};
+
+
 
 
 
