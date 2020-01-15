@@ -1,28 +1,28 @@
-class Jackpot_Canvas{
+class Jackpot_Canvas extends PIXI.Application{
     constructor(options){
+        super({width:options.width, height:options.height, antialias:options.antialias});
         this.options = options;
-        this.element = document.createElement("canvas");
-        this.width = options.width;
-        this.height = options.height;
-        this.element.height = this.height;
-        this.element.width = this.width;
+        this._init();
     }
     getElement(){
-        return this.element;
+        return this.view;
+    }
+
+    _init(){
+
+        this.renderer.autoDensity = true;
+        this.graphics = new PIXI.Graphics();
+        this.stage.addChild(this.graphics);
+        this.graphics.lineStyle(2, 0xFF0000);
+        this.graphics.drawRect(10.5, 10.5, this.renderer.width-20, this.renderer.height-20);
     }
 
     redraw(){
-        if(this.element.parentNode){
-            let rect = this.element.parentNode.getClientRects()[0];
-            if (rect) {
-                this.element.width = rect.width;
-                this.element.height = rect.height;
-                let ctx = this.element.getContext("2d");
-                ctx.clearRect(0, 0, this.element.width, this.element.height);
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = this.options.strokeColor;
-                ctx.strokeRect(10.5, 10.5, this.element.width - 20, this.element.height - 20);
-                ctx.strokeText(this.options.strokeText, 20.5, 30.5);
+        if(this.view.parentNode){
+            let parent = this.view.parentNode;
+            if (parent) {
+                this.renderer.resize(parent.clientWidth, parent.clientHeight);
+
             }
         }
     }

@@ -7,7 +7,7 @@ class Jackpot_Tabs extends LiteGUI.Tabs{
     addScene(sceneCanvasObject){
         let sceneTab = this.addTab("Scene",
             {
-                id:"game_canvas",
+                id:"scene_canvas",
                 selected:true,
                 size:"full",
                 tab_width:100,
@@ -20,7 +20,7 @@ class Jackpot_Tabs extends LiteGUI.Tabs{
     addGame(gameCanvasObject){
         let gameTab = this.addTab("Game",
             {
-                id:"scene_canvas",
+                id:"game_canvas",
                 size:"full",
                 tab_width:100,
                 overflow:"hidden",
