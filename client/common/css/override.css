@@ -57,3 +57,40 @@ button.litebutton {
   background-color: #4a5484;
   color: #fff;
 }
+
+.litetabs.horizontal > ul.wtabcontainer > li.wtab {
+  display: inline-block;
+  min-width: 50px;
+  min-height: 20px;
+  height: calc( 100% - 2px );
+  margin-right: 2px;
+  margin-top: 2px;
+  vertical-align: top;
+  padding: 4px 8px 2px 4px;
+  border-radius: 0;
+}
+
+/*    Tree    */
+
+li.ltreeitem {
+  list-style-type: none;
+  cursor: pointer;
+  /*padding-left: 20px;*/
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  height: 24px;
+  line-height: 24px;
+}
+i.ltreeitem div.ltreeitemtitle {
+  color: #AAA;
+  min-width: 100px;
+  white-space: nowrap;
+  height: 100%;
+}
+li.ltreeitem div.ltreeitemtitle {
+  color: #AAA;
+  min-width: 100px;
+  white-space: nowrap;
+  height: 100%;
+}

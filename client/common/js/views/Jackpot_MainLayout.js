@@ -64,7 +64,6 @@ class Jackpot_MainLayout {
         this.leftArea.onresize = ()=>{
             this.redrawCanvases();
         }
-
     }
     createProjectPanel(){
         this.projectPanel = new Jackpot_ProjectPanel();
