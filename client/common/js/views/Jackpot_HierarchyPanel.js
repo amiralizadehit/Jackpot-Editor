@@ -1,5 +1,5 @@
 class Jackpot_HierarchyPanel extends Jackpot_Panel{
-    constructor() {
+    constructor(treeStructure) {
         let options = {
             id:"left_panel",
             title:"Hierarchy",
@@ -10,7 +10,7 @@ class Jackpot_HierarchyPanel extends Jackpot_Panel{
 
     }
     _init(){
-        let mytree = { id: "Rootnode",
+        let mytree = { id: "Stage",
             children: [
                 { id: "Child1" },
                 { id: "Child2", children: [
@@ -27,6 +27,12 @@ class Jackpot_HierarchyPanel extends Jackpot_Panel{
                 allow_multiselection: true,
                 allow_drag: true,
             });
+
+
+
+        this.objectsTree.onItemContextMenu = (e, data) =>{
+          console.log(data);
+        };
 
         this.objectsTree.root.addEventListener("item_selected",(params)=>{
            console.log(params);
