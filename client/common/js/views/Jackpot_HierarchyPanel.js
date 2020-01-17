@@ -10,6 +10,8 @@ class Jackpot_HierarchyPanel extends Jackpot_Panel{
 
     }
     _init(){
+
+        this.eventEmitter = new Jackpot_EventEmitter();
         let mytree = { id: "Stage",
             children: [
                 { id: "Child1" },
@@ -39,6 +41,11 @@ class Jackpot_HierarchyPanel extends Jackpot_Panel{
         });
 
         this.add(this.objectsTree);
-
+        //this._addListeners();
+    }
+    _addListeners(){
+        this.eventEmitter.on(Jackpot_EventEmitter.CREATE_NEW_OBJECT, (e)=>{
+            console.log("Event Received!", e)
+        })
     }
 }

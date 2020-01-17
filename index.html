@@ -17,7 +17,6 @@
       type="text/javascript"
       src="client/lib/jscolor/jscolor.js"
     ></script>
-
     <script
       type="application/javascript"
       src="client/lib/litegui.js"
@@ -50,6 +49,10 @@
               type="application/javascript"
               src="client/common/js/views/helpers/Jackpot_Canvas.js"
       ></script>
+    <script
+            type="application/javascript"
+            src="client/common/js/utils/Jackpot_EventEmitter.js"
+    ></script>
       <script
               type="application/javascript"
               src="client/common/js/views/Jackpot_MainLayout.js"
@@ -80,6 +83,7 @@
       ></script>
   </head>
   <body>
-    <script src="client/common/js/index.js"></script>
+  <script data-main="client/common/js/index" src="client/lib/ext/require.js"></script>
+    <!--<script src="client/common/js/index.js"></script>-->
   </body>
 </html>
