@@ -1,4 +1,4 @@
-class Jackpot_Canvas extends PIXI.Application{
+export default class Jackpot_Canvas extends PIXI.Application{
     constructor(options){
         super({width:options.width, height:options.height, antialias:options.antialias});
         this.options = options;

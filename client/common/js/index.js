@@ -1,9 +1,14 @@
-window.onload = ()=>{
+import Jackpot_MainLayout from "./views/Jackpot_MainLayout.js";
+import LiteGUI from "../../lib/litegui.js";
+
+(function () {
     "use strict";
 
     LiteGUI.init();
-    let mainView = new Jackpot_MainLayout();
-};
+    new Jackpot_MainLayout();
+
+})();
+
 
 
 

@@ -1,3 +1,4 @@
+import jscolor from "./jscolor/jscolor.js";
 //packer version
 
 /**
@@ -105,7 +106,7 @@ var LiteGUI = {
 	{
 		var evt = document.createEvent( 'CustomEvent' );
 		evt.initCustomEvent( event_name, true,true, params ); //canBubble, cancelable, detail
-		evt.srcElement = origin;
+		//evt.srcElement = origin;
 		if( element.dispatchEvent )
 			element.dispatchEvent( evt );
 		else if( element.__events )
@@ -1309,7 +1310,7 @@ function purgeElement(d, skip) {
 
 //from stackoverflow http://stackoverflow.com/questions/1354064/how-to-convert-characters-to-html-entities-using-plain-javascript
 
-if(typeof escapeHtmlEntities == 'undefined') {
+/*if(typeof escapeHtmlEntities == 'undefined') {
         escapeHtmlEntities = function (text) {
             return text.replace(/[\u00A0-\u2666<>\&]/g, function(c) {
                 return '&' + 
@@ -1574,7 +1575,7 @@ if(typeof escapeHtmlEntities == 'undefined') {
             8250 : 'rsaquo', 
             8364 : 'euro'
         };
-    }
+    }*/
 
 function beautifyCode( code, reserved, skip_css )
 {
@@ -10158,3 +10159,6 @@ Inspector.parseColor = function(color)
 }
 
 LiteGUI.Inspector = Inspector;
+
+export default LiteGUI;
+

@@ -930,5 +930,6 @@ var jscolor = {
 
 };
 
-
 jscolor.install();
+
+export default jscolor;

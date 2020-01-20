@@ -1,4 +1,6 @@
-class Jackpot_Tabs extends LiteGUI.Tabs{
+import LiteGUI from "../../../../lib/litegui.js";
+
+export default class Jackpot_Tabs extends LiteGUI.Tabs{
     constructor(options, legacy){
         super(options, legacy);
 

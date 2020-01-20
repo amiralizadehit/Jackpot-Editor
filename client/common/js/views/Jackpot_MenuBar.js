@@ -1,4 +1,8 @@
-class Jackpot_MenuBar extends LiteGUI.Menubar{
+import LiteGUI from "../../../lib/litegui.js";
+import Jackpot_Dialog from "./helpers/Jackpot_Dialog.js";
+import Jackpot_Inspector from "./helpers/Jackpot_Inspector.js";
+
+export default class Jackpot_MenuBar extends LiteGUI.Menubar{
     constructor(id, options){
         super(id, options);
         this._init();

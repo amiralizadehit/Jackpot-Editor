@@ -1,4 +1,15 @@
-class Jackpot_MainLayout {
+import LiteGUI from "../../../lib/litegui.js";
+import Jackpot_MenuBar from "./Jackpot_MenuBar.js";
+import Jackpot_Area from "./helpers/Jackpot_Area.js";
+import Jackpot_SceneCanvas from "./Jackpot_SceneCanvas.js";
+import Jackpot_GameCanvas from "./Jackpot_GameCanvas.js";
+import Jackpot_Tabs from "./helpers/Jackpot_Tabs.js";
+import Jackpot_InspectorPanel from "./Jackpot_InspectorPanel.js";
+import Jackpot_HierarchyPanel from "./Jackpot_HierarchyPanel.js";
+import Jackpot_ProjectPanel from "./Jackpot_ProjectPanel.js";
+
+
+export default class Jackpot_MainLayout {
     constructor(){
         this.sceneCanvasObjectArrays = [];
         this.gameCanvasObjectArrays = [];
