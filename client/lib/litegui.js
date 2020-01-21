@@ -5090,11 +5090,15 @@ LiteGUI.Console = Console;
 		row.addEventListener("dblclick",onNodeDblClicked );
 		row.addEventListener("contextmenu", function(e) { 
 			var item = this;
-			e.preventDefault(); 
+			e.preventDefault();
 			e.stopPropagation();
 
-			if(e.button != 2) //right button
+			if(e.button !== 2 || e.ctrlKey) {
+				if(e.ctrlKey)
+					onNodeSelected.call(row,e);
 				return;
+			} //right button
+
 
 			if(that.onItemContextMenu)
 				return that.onItemContextMenu(e, { item: item, data: item.data} );
@@ -5137,7 +5141,7 @@ LiteGUI.Console = Console;
 				if(!r && that.onItemAddToSelection)
 					that.onItemAddToSelection(node.data, node);
 			}
-			if(e.shiftKey && that.options.allow_multiselection)
+			else if(e.shiftKey && that.options.allow_multiselection)
 			{
 				//select from current selection till here
 				//current
@@ -5166,6 +5170,7 @@ LiteGUI.Console = Console;
 			else
 			{
 				//mark as selected
+				that.unmarkAllAsSelected();
 				that.markAsSelected( node );
 
 				that._skip_scroll = true; //avoid scrolling while user clicks something

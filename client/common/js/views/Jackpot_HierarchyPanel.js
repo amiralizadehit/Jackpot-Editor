@@ -11,22 +11,25 @@ export default class Jackpot_HierarchyPanel extends Jackpot_Panel{
             close:true
         };
         super(options);
+        this.activeContextMenu = null;
+
         this._init();
 
     }
     _init(){
 
         this.eventEmitter = new Jackpot_EventEmitter();
-        let myTree = { id: "Stage",
+        let myTree = { id: '0', content:"Stage",
             children: [
-                { id: "Child1" },
-                { id: "Child2", children: [
-                        { id: "SubChild1" },
-                        { id: "SubChild2" },
-                        { id: "SubChild3" },
-                        { id: "SubChild4" }
+                { id: '1', content: "Child 1" },
+                { id: '2', content: "Child 2", children: [
+                        { id: '3', content: "Sub Child 1" },
+                        { id: '4', content: "Sub Child 2" },
+                        { id: '5', content: "Sub Child 3" },
+                        { id: '6', content: "Sub Child 4" },
+                        { id: '6', content: "Sub Child 5" }
                     ]},
-                { id: "Child3" },
+                { id: '7', content: "Child 3" },
             ]};
         this.objectsTree = new Jackpot_Tree(myTree,
             {
@@ -35,22 +38,15 @@ export default class Jackpot_HierarchyPanel extends Jackpot_Panel{
                 allow_drag: true,
             });
 
-
-
-        this.objectsTree.onItemContextMenu = (e, data) =>{
-          new Jackpot_NewObjectContextMenu();
-        };
-
-        this.objectsTree.root.addEventListener("item_selected",(params)=>{
-           console.log(params);
-        });
-
         this.add(this.objectsTree);
         this._addListeners();
     }
     _addListeners(){
-        this.eventEmitter.addEventListener(Jackpot_EventEmitter.CREATE_NEW_OBJECT, (e)=>{
-            console.log("Event Received!", e)
+        this.eventEmitter.on(Jackpot_EventEmitter.CONTEXT_MENU_ITEM_SELECTED, (e)=>{
+            /* 1 - WE ADD NEW OBJECT TO THE TREE
+               2 - WE CREATE NEW OBJECT IN THE CANVAS
+                */
+
         })
     }
 }

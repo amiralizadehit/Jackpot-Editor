@@ -5,6 +5,7 @@ import LiteGUI from "../../lib/litegui.js";
     "use strict";
 
     LiteGUI.init();
+
     new Jackpot_MainLayout();
 
 })();

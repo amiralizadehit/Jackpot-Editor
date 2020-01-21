@@ -47,13 +47,7 @@ export default class Jackpot_MenuBar extends LiteGUI.Menubar{
         // with the new settings.
 
         let applySettingsCallback = () => {
-            console.log(
-                "Your name is " +
-                nameWidget.getValue() +
-                ", and you are " +
-                ageWidget.getValue() +
-                " years old"
-            );
+
         };
 
         // Add some buttons
