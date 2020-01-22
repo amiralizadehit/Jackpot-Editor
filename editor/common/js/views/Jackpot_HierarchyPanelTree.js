@@ -1,10 +1,11 @@
-import LiteGUI from "../../../../lib/litegui.js"
-import Jackpot_NewObjectContextMenu from "../Jackpot_NewObjectContextMenu.js";
-import Jackpot_EventEmitter from "../../utils/Jackpot_EventEmitter.js";
+import LiteGUI from "../../../lib/litegui.js"
+import Jackpot_NewObjectContextMenu from "./Jackpot_NewObjectContextMenu.js";
+import Jackpot_EventEmitter from "../utils/Jackpot_EventEmitter.js";
 
-export default class Jackpot_Tree extends LiteGUI.Tree{
-    constructor(data, options, legacy){
-        super(data, options, legacy);
+export default class Jackpot_HierarchyPanelTree extends LiteGUI.Tree{
+    constructor(gameTree, options, legacy){
+        super(gameTree, options, legacy);
+        this.gameTree = gameTree;
         this._init();
     }
     _init(){
@@ -17,22 +18,20 @@ export default class Jackpot_Tree extends LiteGUI.Tree{
     _addListeners(){
         this.root.addEventListener("item_selected",(params)=>{
             this.selectedItems = [params];
-            console.log(this.selectedItems);
         });
         this.root.addEventListener("item_add_to_selection",(params)=>{
             let index = this.getSelectedItemIndex(params.detail.data.id);
             if(index===-1)
                 this.selectedItems.push(params);
-            console.log(this.selectedItems);
         });
 
         this.root.addEventListener("item_remove_from_selection",(params)=>{
             let index = this.getSelectedItemIndex(params.detail.data.id);
             if(index!==-1)
                 this.selectedItems.splice(index,1);
-
-            console.log(this.selectedItems);
         });
+
+
 
         this.onItemContextMenu = (e, data) =>{
             if(this.activeContextMenu){
@@ -46,13 +45,13 @@ export default class Jackpot_Tree extends LiteGUI.Tree{
             /* 1 - WE ADD NEW OBJECT TO THE TREE
                2 - WE CREATE NEW OBJECT IN THE CANVAS
                 */
-                /*this.insertItem({
+                let newObj = {
+                  parentId : parseInt(this.contextMenuFocusItem.data.id,10),
+                  selectedItem : obj.detail.item
+                };
 
-                })*/
-
-                this.eventEmitter.emit(Jackpot_EventEmitter.CREATE_NEW_OBJECT, obj)
-            });
-
+                this.eventEmitter.emit(Jackpot_EventEmitter.CREATE_NEW_OBJECT, {"detail" : newObj})
+        });
 
     }
 

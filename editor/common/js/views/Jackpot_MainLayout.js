@@ -10,7 +10,8 @@ import Jackpot_ProjectPanel from "./Jackpot_ProjectPanel.js";
 
 
 export default class Jackpot_MainLayout {
-    constructor(){
+    constructor(gameTree){
+        this.gameTree = gameTree;
         this.sceneCanvasObjectArrays = [];
         this.gameCanvasObjectArrays = [];
         this.init();
@@ -70,7 +71,7 @@ export default class Jackpot_MainLayout {
         });
     }
     createHierarchyPanel(){
-        this.heirarchyPanel = new Jackpot_HierarchyPanel();
+        this.heirarchyPanel = new Jackpot_HierarchyPanel(this.gameTree);
         this.leftArea.add(this.heirarchyPanel);
         this.leftArea.onresize = ()=>{
             this.redrawCanvases();

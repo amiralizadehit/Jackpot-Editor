@@ -1,10 +1,10 @@
 import Jackpot_Panel from "./helpers/Jackpot_Panel.js";
-import Jackpot_Tree from "./helpers/Jackpot_Tree.js";
+import Jackpot_HierarchyPanelTree from "./Jackpot_HierarchyPanelTree.js";
 import Jackpot_EventEmitter from "../utils/Jackpot_EventEmitter.js";
 import Jackpot_NewObjectContextMenu from "./Jackpot_NewObjectContextMenu.js";
 
 export default class Jackpot_HierarchyPanel extends Jackpot_Panel{
-    constructor(treeStructure) {
+    constructor(gameTree) {
         let options = {
             id:"left_panel",
             title:"Hierarchy",
@@ -12,14 +12,14 @@ export default class Jackpot_HierarchyPanel extends Jackpot_Panel{
         };
         super(options);
         this.activeContextMenu = null;
-
+        this.gameTree = gameTree;
         this._init();
 
     }
     _init(){
 
         this.eventEmitter = new Jackpot_EventEmitter();
-        let myTree = { id: '0', content:"Stage",
+        /*let myTree = { id: '0', content:"Stage",
             children: [
                 { id: '1', content: "Child 1" },
                 { id: '2', content: "Child 2", children: [
@@ -30,8 +30,8 @@ export default class Jackpot_HierarchyPanel extends Jackpot_Panel{
                         { id: '6', content: "Sub Child 5" }
                     ]},
                 { id: '7', content: "Child 3" },
-            ]};
-        this.objectsTree = new Jackpot_Tree(myTree,
+            ]};*/
+        this.objectsTree = new Jackpot_HierarchyPanelTree(this.gameTree,
             {
                 allow_rename: true,
                 allow_multiselection: true,
@@ -42,11 +42,5 @@ export default class Jackpot_HierarchyPanel extends Jackpot_Panel{
         this._addListeners();
     }
     _addListeners(){
-        this.eventEmitter.on(Jackpot_EventEmitter.CONTEXT_MENU_ITEM_SELECTED, (e)=>{
-            /* 1 - WE ADD NEW OBJECT TO THE TREE
-               2 - WE CREATE NEW OBJECT IN THE CANVAS
-                */
-
-        })
     }
 }
