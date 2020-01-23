@@ -14,10 +14,12 @@ export class Jackpot_GameNode{
     }
 }
 
+let _maxId = 0;
+
 export class Jackpot_GameTree {
     constructor(loadedTree){
         //Here we make the tree from JSON file stored on disk.
-        this.maxId = 0;
+
         if(loadedTree)
             this._createTree(loadedTree);
         else{
@@ -36,7 +38,19 @@ export class Jackpot_GameTree {
         this._updateMaxId();
     }
 
-    _traverse(callback){
+
+
+    _updateMaxId(){
+        this.traverse(node=>{
+            let intId = parseInt(node.id,10);
+            if(intId > _maxId)
+                _maxId = intId
+        });
+        console.log(_maxId);
+    }
+
+
+    traverse(callback){
         function walk(node) {
             callback(node);
             node.children.forEach(walk);
@@ -44,21 +58,13 @@ export class Jackpot_GameTree {
         walk(this._root);
     }
 
-    _updateMaxId(){
-        this._traverse(node=>{
-            let intId = parseInt(node.id,10);
-            if(intId > this.maxId)
-                this.maxId = intId
-        });
-        console.log(this.maxId);
-    }
 
     add(value){
-        value["id"] = (++this.maxId).toString();
-        this.maxId++;
+        value["id"] = (++_maxId).toString();
+        _maxId++;
         let newNode = new Jackpot_GameNode(value);
 
-        this._traverse((node)=>{
+        this.traverse((node)=>{
             if(value.parentId === node.id){
                 node.children.push(newNode)
             }
@@ -67,7 +73,7 @@ export class Jackpot_GameTree {
     }
 
     remove(nodeId){
-        this._traverse((node)=>{
+        this.traverse((node)=>{
             node.children.forEach((childNode, index)=>{
                 if(childNode.id===nodeId){
                     node.children.splice(index,1);
@@ -78,7 +84,7 @@ export class Jackpot_GameTree {
 
     search(nodeId){
         let nodeInTree = null;
-        this._traverse((node)=>{
+        this.traverse((node)=>{
             if(node.id===nodeId){
                 nodeInTree = node;
             }
@@ -86,7 +92,7 @@ export class Jackpot_GameTree {
         return nodeInTree;
     }
 
-    getTree(){
+    getInnerTree(){
         return this._root;
     }
 
