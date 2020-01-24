@@ -14,32 +14,6 @@ export default class Jackpot_SceneCanvas extends Jackpot_Canvas{
         this.renderTree();
     }
 
-    _drawNode(node){
-        if(node.id==="0"){
-            //This is the root node (stage)
-        }
-        else{
-            switch (node.type) {
-                case NodeTypes.CONTAINER :
-                        this._addContainer(node);
-                    break;
-                case NodeTypes.SPRITE :
-                        this._addSprite(node);
-                    break;
-            }
-        }
-    }
-
-    _addContainer(node){
-
-        new Jackpot_PIXI_Container();
-    }
-
-    _addSprite(node){
-
-
-    }
-
     renderTree(){
         this.gameTree.getInnerTree().children.forEach(stageChild=>{
             this.stage.addChild(stageChild.pixiObj);
