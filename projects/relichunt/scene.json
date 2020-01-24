@@ -1,6 +1,7 @@
 {
   "id": "0",
   "parentId": null,
+  "isRoot": true,
   "type": "Container",
   "content": "Stage",
   "properties": {
@@ -51,11 +52,13 @@
     {
       "id": "2",
       "parentId": "0",
+      "isRoot": false,
       "type": "Container",
       "content": "Child 2",
       "children": [{
         "id": "3",
         "parentId": "2",
+        "isRoot": false,
         "type": "Sprite",
         "content": "Sub Child 1",
         "properties": {
@@ -83,6 +86,7 @@
         {
           "id": "4",
           "parentId": "2",
+          "isRoot": false,
           "type": "Sprite",
           "content": "Sub Child 2",
           "properties": {
@@ -110,6 +114,7 @@
         {
           "id": "5",
           "parentId": "2",
+          "isRoot": false,
           "type": "Sprite",
           "content": "Sub Child 3",
           "children": []
@@ -117,6 +122,7 @@
         {
           "id": "6",
           "parentId": "2",
+          "isRoot": false,
           "type": "Sprite",
           "content": "Sub Child 4",
           "properties": {
@@ -144,6 +150,7 @@
         {
           "id": "7",
           "parentId": "2",
+          "isRoot": false,
           "type": "Sprite",
           "content": "Sub Child 5",
           "properties": {
@@ -173,6 +180,7 @@
     {
       "id": "8",
       "parentId": "0",
+      "isRoot": false,
       "type": "Container",
       "content": "Child 3",
       "properties": {

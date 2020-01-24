@@ -1,9 +1,11 @@
 import Jackpot_ContextMenu from "./helpers/Jackpot_ContextMenu.js";
 import Jackpot_EventEmitter from "../utils/Jackpot_EventEmitter.js";
+import {NodeTypes} from "../utils/Jackpot_EditorConfiguration.js";
 
 export default class Jackpot_NewObjectContextMenu extends Jackpot_ContextMenu{
     constructor(mouseEvent){
-        let actions = ["Sprite"];
+
+        let actions = Object.values(NodeTypes);
         let eventEmitter = new Jackpot_EventEmitter();
         super(actions, {
             callback: (e)=>{
