@@ -5,11 +5,14 @@ import Jackpot_PIXI_Container from "../game/Jackpot_PIXI_Container.js";
 import Jackpot_PIXI_Sprite from "../game/Jackpot_PIXI_Sprite.js";
 import {Jackpot_GameNode} from "../utils/Jackpot_GameTree.js";
 import {Jackpot_JSONNode} from "../utils/Jackpot_JSONTree.js";
+import Jackpot_AssetLoader from "../utils/Jackpot_AssetLoader.js";
 
 
 
 let _JSONTreeObj = null;
 let _GameTreeObj = null;
+let _loadableNodes = [];     //This keeps track of all nodes which need to be loaded before use
+                            // e.g. Sprites, Spine, ...
 
 /*
     This class is responsible for all tree operations (creation, updating, ...)
@@ -19,14 +22,21 @@ export default class Jackpot_TreeManager {
 
         //Building Tree Objects
         this.rawJSON = rawJSON;
-        this._createJSONTreeObject();
-        this._createGameTreeObject();
-
+        this._init();
     }
+    _init(){
+        this._createJSONTreeObject();
+    }
+
+
+
 
     _createJSONTreeObject(){
         if(this.rawJSON){
             _JSONTreeObj = new Jackpot_JSONTree(this.rawJSON);
+            _JSONTreeObj.traverse(node=>{
+                Jackpot_AssetLoader.markForLoading(node);
+            })
         }
         else{
             _JSONTreeObj = new Jackpot_JSONTree(new Jackpot_JSONNode({
@@ -39,6 +49,9 @@ export default class Jackpot_TreeManager {
                 isRoot: true,
             }));
         }
+    }
+    _loadLoadableAssets(){
+
     }
 
     _createGameTreeObject(){
@@ -66,8 +79,12 @@ export default class Jackpot_TreeManager {
                         break;
                     }
                     case NodeTypes.SPRITE : {
-                        newGameNode.pixiObj = new Jackpot_PIXI_Sprite();
+                        let texture = Jackpot_AssetLoader.getTexture(node.id);
+                        if(!texture)
+                            throw new Error("Texture not found!");
+                        newGameNode.pixiObj = new Jackpot_PIXI_Sprite(texture);
                         _GameTreeObj.add(newGameNode);
+                        _loadableNodes.push(node);
                         break;
                     }
                     default : {
@@ -86,11 +103,23 @@ export default class Jackpot_TreeManager {
         return _JSONTreeObj.getInnerTree();
     }
 
+    generateGameTree(callback){
+        Jackpot_AssetLoader.loadNow(()=>{
+            this._createGameTreeObject();
+            if(callback)
+                callback();
+        });
+    }
+
     getJSONTreeObj(){
         return _JSONTreeObj;
     }
 
     getGameTreeObj(){
         return _GameTreeObj;
+    }
+
+    getLoadableNodes(){
+        return _loadableNodes;
     }
 }

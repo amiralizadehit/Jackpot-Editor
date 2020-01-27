@@ -2,27 +2,27 @@ import Jackpot_EventEmitter from "../utils/Jackpot_EventEmitter.js";
 import Jackpot_MainLayout from "../views/Jackpot_MainLayout.js";
 import Jackpot_IO from "../utils/Jackpot_IO.js";
 import {NodeTypes} from "../utils/Jackpot_EditorConfiguration.js";
+
 import Jackpot_TreeManager from "./Jackpot_TreeManager.js";
+import Jackpot_AssetLoader from "../utils/Jackpot_AssetLoader.js";
 
 export default class Jackpot_Manager {
     constructor(){
         this.eventEmitter = new Jackpot_EventEmitter();
         this.io = new Jackpot_IO();
-        //Game Tree is loaded from the disk ...
 
         let rawJSON = this.io.loadScene();
         this.treeManager = new Jackpot_TreeManager(rawJSON);
-        this.loadedGame = this.io.loadGame();
-
-        this.ui = new Jackpot_MainLayout(this.treeManager, this.loadedGame);
-
-        this._init();
+        this.treeManager.generateGameTree(()=>{
+            this.ui = new Jackpot_MainLayout(this.treeManager);
+            this._init();
+        });
     }
+
     _init(){
 
         this._addListeners();
     }
-
 
     _addListeners(){
         this.eventEmitter.on(Jackpot_EventEmitter.CREATE_NEW_OBJECT, obj =>{

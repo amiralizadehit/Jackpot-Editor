@@ -1,3 +1,5 @@
+import {GAME_INFO} from "./Jackpot_GameInfo.js";
+
 let scene = {
     id: '0',
     parentId: null,
@@ -29,7 +31,7 @@ let scene = {
             parentId: '0',
             isRoot:false,
             type: 'Container',
-            content: 'Child 1',
+            content: 'Container 1',
             properties: {
                 position: {
                     x: 100,
@@ -56,13 +58,13 @@ let scene = {
             parentId: '0',
             isRoot:false,
             type: 'Container',
-            content: 'Child 2',
+            content: 'Some Symbols',
             children: [
                 {
                     id: '3',
                     parentId: '2',
                     type: 'Sprite',
-                    content: 'Sub Child 1',
+                    content: 'Bird',
                     properties: {
                         position: {
                             x: 100,
@@ -81,7 +83,7 @@ let scene = {
                             x: 0,
                             y: 0
                         },
-                        image: './img/symbol_bird.png'
+                        image: '/img/symbol_bird.png'
                     },
                     children: []
                 },
@@ -90,7 +92,7 @@ let scene = {
                     parentId: '2',
                     isRoot:false,
                     type: 'Sprite',
-                    content: 'Sub Child 2',
+                    content: 'Blue',
                     properties: {
                         position: {
                             x: 100,
@@ -109,7 +111,7 @@ let scene = {
                             x: 0,
                             y: 0
                         },
-                        image: './img/symbol_blue.png'
+                        image: '/img/symbol_blue.png'
                     },
                     children: []
                 },
@@ -118,7 +120,7 @@ let scene = {
                     parentId: '2',
                     isRoot:false,
                     type: 'Sprite',
-                    content: 'Sub Child 3',
+                    content: 'Chest',
                     properties: {
                         position: {
                             x: 100,
@@ -137,7 +139,7 @@ let scene = {
                             x: 0,
                             y: 0
                         },
-                        image: './img/symbol_chest.png'
+                        image: '/img/symbol_chest.png'
                     },
                     children: []
                 },
@@ -146,7 +148,7 @@ let scene = {
                     parentId: '2',
                     isRoot:false,
                     type: 'Sprite',
-                    content: 'Sub Child 4',
+                    content: 'Frog',
                     properties: {
                         position: {
                             x: 100,
@@ -165,7 +167,7 @@ let scene = {
                             x: 0,
                             y: 0
                         },
-                        image: './img/symbol_dagger.png'
+                        image: '/img/symbol_frog.png'
                     },
                     children: []
                 },
@@ -174,7 +176,7 @@ let scene = {
                     parentId: '2',
                     isRoot:false,
                     type: 'Sprite',
-                    content: 'Sub Child 5',
+                    content: 'Dagger',
                     properties: {
                         position: {
                             x: 100,
@@ -193,7 +195,7 @@ let scene = {
                             x: 0,
                             y: 0
                         },
-                        image: './img/symbol_frog.png'
+                        image: '/img/symbol_dagger.png'
                     },
                     children: []
                 }
@@ -204,7 +206,7 @@ let scene = {
             parentId: '0',
             isRoot:false,
             type: 'Container',
-            content: 'Child 3',
+            content: 'Container 2',
             properties: {
                 position: {
                     x: 100,
@@ -235,7 +237,8 @@ let game = {
 
 export default class Jackpot_IO {
     constructor(){
-
+        GAME_INFO.name = game.name;
+        GAME_INFO.scene = scene;
     }
     loadGame(){
         return game;
