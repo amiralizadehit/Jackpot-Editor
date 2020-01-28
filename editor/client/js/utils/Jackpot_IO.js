@@ -7,24 +7,25 @@ let scene = {
     type: 'Container',
     content: 'Stage',
     properties: {
-    position: {
-        x: 100,
+        visible:true,
+        position: {
+            x: 100,
             y: 200
-    },
-    rotation: 0,
+        },
+        rotation: 0,
         scale: {
-        x: 1,
+            x: 1,
             y: 1
-    },
-    skew: {
-        x: 0,
+        },
+        skew: {
+            x: 0,
             y: 0
-    },
-    pivot: {
-        x: 0,
+        },
+        pivot: {
+            x: 0,
             y: 0
-    }
-},
+        }
+    },
     children: [
         {
             id: '1',
@@ -33,6 +34,7 @@ let scene = {
             type: 'Container',
             content: 'Container 1',
             properties: {
+                visible:true,
                 position: {
                     x: 100,
                     y: 200
@@ -59,6 +61,26 @@ let scene = {
             isRoot:false,
             type: 'Container',
             content: 'Some Symbols',
+            properties: {
+                visible:true,
+                position: {
+                    x: 100,
+                    y: 200
+                },
+                rotation: 0,
+                scale: {
+                    x: 1,
+                    y: 1
+                },
+                skew: {
+                    x: 0,
+                    y: 0
+                },
+                pivot: {
+                    x: 0,
+                    y: 0
+                }
+            },
             children: [
                 {
                     id: '3',
@@ -66,6 +88,7 @@ let scene = {
                     type: 'Sprite',
                     content: 'Bird',
                     properties: {
+                        visible:true,
                         position: {
                             x: 100,
                             y: 200
@@ -83,7 +106,11 @@ let scene = {
                             x: 0,
                             y: 0
                         },
-                        image: '/img/symbol_bird.png'
+                        image: '/img/symbol_bird.png',
+                        anchor:{
+                            x:0.5,
+                            y:0.5
+                        }
                     },
                     children: []
                 },
@@ -94,6 +121,7 @@ let scene = {
                     type: 'Sprite',
                     content: 'Blue',
                     properties: {
+                        visible:true,
                         position: {
                             x: 100,
                             y: 200
@@ -111,7 +139,11 @@ let scene = {
                             x: 0,
                             y: 0
                         },
-                        image: '/img/symbol_blue.png'
+                        image: '/img/symbol_blue.png',
+                        anchor:{
+                            x:0.5,
+                            y:0.5
+                        }
                     },
                     children: []
                 },
@@ -122,6 +154,7 @@ let scene = {
                     type: 'Sprite',
                     content: 'Chest',
                     properties: {
+                        visible:true,
                         position: {
                             x: 100,
                             y: 200
@@ -139,7 +172,11 @@ let scene = {
                             x: 0,
                             y: 0
                         },
-                        image: '/img/symbol_chest.png'
+                        image: '/img/symbol_chest.png',
+                        anchor:{
+                            x:0.5,
+                            y:0.5
+                        }
                     },
                     children: []
                 },
@@ -150,6 +187,7 @@ let scene = {
                     type: 'Sprite',
                     content: 'Frog',
                     properties: {
+                        visible:true,
                         position: {
                             x: 100,
                             y: 200
@@ -167,7 +205,11 @@ let scene = {
                             x: 0,
                             y: 0
                         },
-                        image: '/img/symbol_frog.png'
+                        image: '/img/symbol_frog.png',
+                        anchor:{
+                            x:0.5,
+                            y:0.5
+                        }
                     },
                     children: []
                 },
@@ -178,6 +220,7 @@ let scene = {
                     type: 'Sprite',
                     content: 'Dagger',
                     properties: {
+                        visible:true,
                         position: {
                             x: 100,
                             y: 200
@@ -195,7 +238,11 @@ let scene = {
                             x: 0,
                             y: 0
                         },
-                        image: '/img/symbol_dagger.png'
+                        image: '/img/symbol_dagger.png',
+                        anchor:{
+                            x:0.5,
+                            y:0.5
+                        }
                     },
                     children: []
                 }
@@ -208,6 +255,7 @@ let scene = {
             type: 'Container',
             content: 'Container 2',
             properties: {
+                visible:true,
                 position: {
                     x: 100,
                     y: 200

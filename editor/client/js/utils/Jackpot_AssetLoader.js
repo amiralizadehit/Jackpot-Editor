@@ -19,6 +19,10 @@ export default class Jackpot_AssetLoader{
         PIXI.Loader.shared.load(callback)
     }
 
+    static getResource(name){
+        return PIXI.Loader.shared.resources[name];
+    }
+
     static getTexture(name){
         return PIXI.Loader.shared.resources[name].texture;
     }

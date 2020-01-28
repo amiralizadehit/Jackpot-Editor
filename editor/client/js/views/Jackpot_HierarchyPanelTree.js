@@ -18,6 +18,7 @@ export default class Jackpot_HierarchyPanelTree extends LiteGUI.Tree{
     _addListeners(){
         this.root.addEventListener("item_selected",(params)=>{
             this.selectedItems = [params];
+            this.eventEmitter.emit(Jackpot_EventEmitter.NODE_SELECTED,{detail: params.detail.data.id});
         });
         this.root.addEventListener("item_add_to_selection",(params)=>{
             let index = this.getSelectedItemIndex(params.detail.data.id);
@@ -30,8 +31,6 @@ export default class Jackpot_HierarchyPanelTree extends LiteGUI.Tree{
             if(index!==-1)
                 this.selectedItems.splice(index,1);
         });
-
-
 
         this.onItemContextMenu = (e, data) =>{
             if(this.activeContextMenu){

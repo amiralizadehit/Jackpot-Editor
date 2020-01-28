@@ -5,6 +5,7 @@ export class Jackpot_NodeBase{
         this.parentId = value.parentId;
         this.content = value.title;
         this.type = value.type;
+        this.isRoot = value.isRoot;
         this.children = value.children;
     }
 
@@ -73,7 +74,7 @@ export class Jackpot_TreeBase {
         return nodeInTree;
     }
 
-    getInnerTree(){
+    getRoot(){
         return this._root;
     }
 

@@ -48,7 +48,7 @@ export default class Jackpot_MainLayout {
         this.sceneArea = topLeftArea.getSection(1);
     }
     createCanvasSection(){
-        let sceneCanvasObject = new Jackpot_SceneCanvas(this.treeManager.getGameTreeObj());
+        let sceneCanvasObject = new Jackpot_SceneCanvas(this.treeManager);
         let gameCanvasObject = new Jackpot_GameCanvas();
         let tabs = new Jackpot_Tabs({size:"full"});
         tabs.addScene(sceneCanvasObject);
@@ -61,7 +61,7 @@ export default class Jackpot_MainLayout {
         this.gameCanvasObjectArrays.push(gameCanvasObject);
     }
     createInspectorPanel(){
-        this.inspectorPanel = new Jackpot_InspectorPanel();
+        this.inspectorPanel = new Jackpot_InspectorPanel(this.treeManager);
         this.rightArea.add(this.inspectorPanel);
         this.rightArea.onresize = ()=>{
             this.redrawCanvases();

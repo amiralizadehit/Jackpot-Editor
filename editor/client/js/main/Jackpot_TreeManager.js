@@ -11,6 +11,7 @@ import Jackpot_AssetLoader from "../utils/Jackpot_AssetLoader.js";
 
 let _JSONTreeObj = null;
 let _GameTreeObj = null;
+let _GameArrayObj = [];
 let _loadableNodes = [];     //This keeps track of all nodes which need to be loaded before use
                             // e.g. Sprites, Spine, ...
 
@@ -27,8 +28,6 @@ export default class Jackpot_TreeManager {
     _init(){
         this._createJSONTreeObject();
     }
-
-
 
 
     _createJSONTreeObject(){
@@ -50,26 +49,27 @@ export default class Jackpot_TreeManager {
             }));
         }
     }
-    _loadLoadableAssets(){
-
-    }
 
     _createGameTreeObject(){
-        _GameTreeObj = new Jackpot_GameTree(new Jackpot_GameNode({
+        let root = new Jackpot_GameNode({
             id:"0",
             parentId: null,
             title:"Stage",
             type:"Container",
             children:[],
-            pixiObj: null,
+            properties: "default",
+            pixiObj: new Jackpot_PIXI_Container(), //This PIXI Object has already been created for us.
             isRoot: true,
-        }));
+        });
+        _GameTreeObj = new Jackpot_GameTree(root);
+        _GameArrayObj["0"] = root;
         _JSONTreeObj.traverse(node => {
             if(!node.isRoot){
                 let newGameNode = new Jackpot_GameNode({
                     parentId: node.parentId,
                     title: node.content,
                     type: node.type,
+                    isRoot:false,
                     children: [],
                 });
                 switch (node.type) {
@@ -83,6 +83,7 @@ export default class Jackpot_TreeManager {
                         if(!texture)
                             throw new Error("Texture not found!");
                         newGameNode.pixiObj = new Jackpot_PIXI_Sprite(texture);
+
                         _GameTreeObj.add(newGameNode);
                         _loadableNodes.push(node);
                         break;
@@ -95,12 +96,41 @@ export default class Jackpot_TreeManager {
                 if(!parentNode.isRoot){
                     parentNode.pixiObj.addChild(newGameNode.pixiObj)
                 }
+
+                if(newGameNode.pixiObj instanceof PIXI.DisplayObject){
+                    this._setDisplayObjectProperties(node, newGameNode);
+                }
+                if(newGameNode.pixiObj instanceof PIXI.Sprite){
+                    this._setSpriteObjectProperties(node, newGameNode)
+                }
+                _GameArrayObj[node.id]=newGameNode;
+            }
+            else {
+                this._setDisplayObjectProperties(node, _GameTreeObj.getRoot());
             }
         });
     }
 
+    _setDisplayObjectProperties(referenceNode, newNode){
+        if(referenceNode.properties==="default")
+            return;
+        newNode.pixiObj.position.set(referenceNode.properties.position.x, referenceNode.properties.position.y);
+        newNode.pixiObj.scale.set(referenceNode.properties.scale.x, referenceNode.properties.scale.y);
+        newNode.pixiObj.rotation = referenceNode.properties.rotation;
+        newNode.pixiObj.pivot.set(referenceNode.properties.pivot.x, referenceNode.properties.pivot.y);
+        newNode.pixiObj.visible = referenceNode.properties.visible;
+    }
+
+    _setSpriteObjectProperties(referenceNode, newNode){
+        if(referenceNode.properties==="default")
+            return;
+        newNode.pixiObj.anchor.set(referenceNode.properties.anchor.x, referenceNode.properties.anchor.y);
+    }
+
+
+
     getHierarchyTreeObj(){
-        return _JSONTreeObj.getInnerTree();
+        return _JSONTreeObj.getRoot();
     }
 
     generateGameTree(callback){
@@ -109,6 +139,10 @@ export default class Jackpot_TreeManager {
             if(callback)
                 callback();
         });
+    }
+
+    getGameArrayObj(){
+        return _GameArrayObj;
     }
 
     getJSONTreeObj(){

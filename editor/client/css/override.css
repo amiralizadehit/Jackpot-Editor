@@ -94,3 +94,45 @@ li.ltreeitem div.ltreeitemtitle {
   white-space: nowrap;
   height: 100%;
 }
+
+/*      Inspector Widget      */
+
+.inspector .wcontent input, .inspector .wcontent textarea {
+  color: #999;
+  border: 0;
+  background-color: transparent;
+}
+
+.inspector .dragger input {
+  color: #999;
+  border: 0;
+  background-color: transparent;
+}
+
+.inspector .whidden {
+  position: relative;
+  overflow: hidden;
+  color: #999;
+}
+
+.inspector .widget {
+  vertical-align: top;
+  min-height: 1.2em;
+  /* user-select: none; */
+  height: 2.5em;
+}
+.inspector .wtitle, .inspector .wsectiontitle {
+  display: inline-block;
+  position: relative;
+  z-index: auto;
+  background-color: #555;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 2px;
+  padding-left: 8px;
+  /* margin-bottom: 4px; */
+  color: #dadada;
+  font-size: 1.2em;
+}
