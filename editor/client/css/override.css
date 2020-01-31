@@ -136,3 +136,13 @@ li.ltreeitem div.ltreeitemtitle {
   color: #dadada;
   font-size: 1.2em;
 }
+
+.inspector .switch-section-button {
+    float: left;
+    display: inline-block;
+    margin: 6px 4px -4px 0;
+    border-top: 6px solid #333;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+}

@@ -56,23 +56,23 @@ export default class Jackpot_InspectorPanel extends Jackpot_Panel{
                 let rotation = node.pixiObj.rotation;
                 let visibility = node.pixiObj.visible;
 
-                widgets.addString("Name",node.content);
+                widgets.nameWidget = widgets.addString("Name",node.content);
                 widgets.addCheckbox("Visibility",visibility, {callback:(e)=>{
                         this.selectedNode.pixiObj.visible = e;
                     }});
                 widgets.addSection("Rect Transform");
-                widgets.addVector2("Position",[position.x, position.y],{step:1, callback:(e)=>{
+                widgets.positionWidget = widgets.addVector2("Position",[position.x, position.y],{precision: 3, step:1, callback:(e)=>{
                         this.selectedNode.pixiObj.position.set(e[0], e[1]);
                     }});
                 //widgets.addSeparator();
-                widgets.addVector2("Scale",[scale.x, scale.y],{callback:(e)=>{
+                widgets.scaleWidget = widgets.addVector2("Scale",[scale.x, scale.y],{precision: 2,callback:(e)=>{
                         this.selectedNode.pixiObj.scale.set(e[0], e[1]);
                     }});
                 //widgets.addSeparator();
-                widgets.addSlider("Rotation",rotation,{min:0,max:359,step:1, callback:(e)=>{
+                widgets.rotationWidget = widgets.addSlider("Rotation",rotation,{min:0,max:359,step:1, callback:(e)=>{
                         this.selectedNode.pixiObj.rotation = e*Math.PI/180;
                     }});
-                widgets.addVector2("Pivot ",[pivot.x, pivot.y],{callback:(e)=>{
+                widgets.addVector2("Pivot ",[pivot.x, pivot.y],{precision: 2,callback:(e)=>{
                         this.selectedNode.pixiObj.pivot.set(e[0],e[1]);
                     }});
             }
@@ -84,8 +84,16 @@ export default class Jackpot_InspectorPanel extends Jackpot_Panel{
                         y:node.pixiObj.anchor.y,
                     };
                     widgets.addSection("Sprite");
-                    widgets.addVector2("Anchor ",[anchor.x, anchor.y],{callback:(e)=>{
+                    widgets.addVector2("Anchor ",[anchor.x, anchor.y],{precision: 2,min: 0, max:1,callback:(e)=>{
+                            let xDiff = (e[0]-this.selectedNode.pixiObj.anchor.x) * this.selectedNode.pixiObj.width;
+                            let yDiff = (e[1]-this.selectedNode.pixiObj.anchor.y) * this.selectedNode.pixiObj.height;
+                            let currentXPos = this.selectedNode.pixiObj.position.x;
+                            let currentYPos = this.selectedNode.pixiObj.position.y;
+                            let newXPos = currentXPos+xDiff;
+                            let newYPos = currentYPos+yDiff;
                             this.selectedNode.pixiObj.anchor.set(e[0],e[1]);
+                            this.selectedNode.pixiObj.position.set(newXPos, newYPos);
+                            widgets.positionWidget.setValue([newXPos, newYPos], false);
                         }});
 
                     widgets.addFile("Image", {name:resourceURL});

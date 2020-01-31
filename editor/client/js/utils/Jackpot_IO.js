@@ -9,8 +9,8 @@ let scene = {
     properties: {
         visible:true,
         position: {
-            x: 100,
-            y: 200
+            x: 0,
+            y: 0
         },
         rotation: 0,
         scale: {
@@ -36,8 +36,8 @@ let scene = {
             properties: {
                 visible:true,
                 position: {
-                    x: 100,
-                    y: 200
+                    x: 0,
+                    y: 0
                 },
                 rotation: 0,
                 scale: {
@@ -64,8 +64,8 @@ let scene = {
             properties: {
                 visible:true,
                 position: {
-                    x: 100,
-                    y: 200
+                    x: 0,
+                    y: 0
                 },
                 rotation: 0,
                 scale: {
@@ -90,8 +90,8 @@ let scene = {
                     properties: {
                         visible:true,
                         position: {
-                            x: 100,
-                            y: 200
+                            x: 510.601,
+                            y: 428.732
                         },
                         rotation: 0,
                         scale: {
@@ -123,8 +123,8 @@ let scene = {
                     properties: {
                         visible:true,
                         position: {
-                            x: 100,
-                            y: 200
+                            x: 0,
+                            y: 0
                         },
                         rotation: 0,
                         scale: {
@@ -156,8 +156,8 @@ let scene = {
                     properties: {
                         visible:true,
                         position: {
-                            x: 100,
-                            y: 200
+                            x: 0,
+                            y: 0
                         },
                         rotation: 0,
                         scale: {
@@ -189,8 +189,8 @@ let scene = {
                     properties: {
                         visible:true,
                         position: {
-                            x: 100,
-                            y: 200
+                            x: 0,
+                            y: 0
                         },
                         rotation: 0,
                         scale: {
@@ -222,8 +222,8 @@ let scene = {
                     properties: {
                         visible:true,
                         position: {
-                            x: 100,
-                            y: 200
+                            x: 0,
+                            y: 0
                         },
                         rotation: 0,
                         scale: {
@@ -257,8 +257,8 @@ let scene = {
             properties: {
                 visible:true,
                 position: {
-                    x: 100,
-                    y: 200
+                    x: 0,
+                    y: 0
                 },
                 rotation: 0,
                 scale: {
