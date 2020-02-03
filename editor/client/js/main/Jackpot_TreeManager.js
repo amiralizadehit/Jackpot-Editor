@@ -6,6 +6,7 @@ import Jackpot_PIXI_Sprite from "../game/Jackpot_PIXI_Sprite.js";
 import {Jackpot_GameNode} from "../utils/Jackpot_GameTree.js";
 import {Jackpot_JSONNode} from "../utils/Jackpot_JSONTree.js";
 import Jackpot_AssetLoader from "../utils/Jackpot_AssetLoader.js";
+import Jackpot_EventEmitter from "../utils/Jackpot_EventEmitter.js";
 
 
 
@@ -23,12 +24,12 @@ export default class Jackpot_TreeManager {
 
         //Building Tree Objects
         this.rawJSON = rawJSON;
+        this.eventEmitter = new Jackpot_EventEmitter();
         this._init();
     }
     _init(){
         this._createJSONTreeObject();
     }
-
 
     _createJSONTreeObject(){
         if(this.rawJSON){
@@ -111,20 +112,25 @@ export default class Jackpot_TreeManager {
         });
     }
 
-    _setDisplayObjectProperties(referenceNode, newNode){
-        if(referenceNode.properties==="default")
+    _setDisplayObjectProperties(referenceNode, newNode) {
+        if (referenceNode.properties === "default")
             return;
         newNode.pixiObj.position.set(referenceNode.properties.position.x, referenceNode.properties.position.y);
         newNode.pixiObj.scale.set(referenceNode.properties.scale.x, referenceNode.properties.scale.y);
         newNode.pixiObj.rotation = referenceNode.properties.rotation;
         newNode.pixiObj.pivot.set(referenceNode.properties.pivot.x, referenceNode.properties.pivot.y);
         newNode.pixiObj.visible = referenceNode.properties.visible;
+        newNode.pixiObj.interactive = true;
+
     }
 
     _setSpriteObjectProperties(referenceNode, newNode){
         if(referenceNode.properties==="default")
             return;
         newNode.pixiObj.anchor.set(referenceNode.properties.anchor.x, referenceNode.properties.anchor.y);
+        newNode.pixiObj.mouseup = (e) => {
+            this.eventEmitter.emit(Jackpot_EventEmitter.NODE_SELECTED, {"detail": newNode});
+        };
     }
 
 

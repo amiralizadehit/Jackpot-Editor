@@ -71,7 +71,7 @@ export default class Jackpot_MainLayout {
         });
     }
     createHierarchyPanel(){
-        this.heirarchyPanel = new Jackpot_HierarchyPanel(this.treeManager.getHierarchyTreeObj());
+        this.heirarchyPanel = new Jackpot_HierarchyPanel(this.treeManager);
         this.leftArea.add(this.heirarchyPanel);
         this.leftArea.onresize = ()=>{
             this.redrawCanvases();
