@@ -108,8 +108,8 @@ let scene = {
                         },
                         image: '/img/symbol_bird.png',
                         anchor:{
-                            x:0.5,
-                            y:0.5
+                            x:0,
+                            y:0
                         }
                     },
                     children: []
@@ -141,8 +141,8 @@ let scene = {
                         },
                         image: '/img/symbol_blue.png',
                         anchor:{
-                            x:0.5,
-                            y:0.5
+                            x:0,
+                            y:0
                         }
                     },
                     children: []
@@ -174,8 +174,8 @@ let scene = {
                         },
                         image: '/img/symbol_chest.png',
                         anchor:{
-                            x:0.5,
-                            y:0.5
+                            x:0,
+                            y:0
                         }
                     },
                     children: []
@@ -207,8 +207,8 @@ let scene = {
                         },
                         image: '/img/symbol_frog.png',
                         anchor:{
-                            x:0.5,
-                            y:0.5
+                            x:0,
+                            y:0
                         }
                     },
                     children: []
@@ -240,8 +240,8 @@ let scene = {
                         },
                         image: '/img/symbol_dagger.png',
                         anchor:{
-                            x:0.5,
-                            y:0.5
+                            x:0,
+                            y:0
                         }
                     },
                     children: []

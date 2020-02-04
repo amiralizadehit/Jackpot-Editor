@@ -75,8 +75,9 @@ export default class Jackpot_InspectorPanel extends Jackpot_Panel{
                         this.selectedNode.pixiObj.rotation = e*Math.PI/180;
                         this.eventEmitter.emit(Jackpot_EventEmitter.NODE_PROPERTY_UPDATED);
                     }});
-                widgets.addVector2("Pivot ",[pivot.x, pivot.y],{precision: 2,callback:(e)=>{
-                        this.selectedNode.pixiObj.pivot.set(e[0],e[1]);
+                widgets.addVector2("Pivot ",[pivot.x, pivot.y],{ step:0.1, precision: 1,callback:(e)=>{
+                        this.selectedNode.pixiObj.pivot.set(e[0]*this.selectedNode.pixiObj.width,e[1]*this.selectedNode.pixiObj.height);
+                        this.eventEmitter.emit(Jackpot_EventEmitter.NODE_PROPERTY_UPDATED);
                     }});
             }
             switch (node.type) {
@@ -87,16 +88,10 @@ export default class Jackpot_InspectorPanel extends Jackpot_Panel{
                         y:node.pixiObj.anchor.y,
                     };
                     widgets.addSection("Sprite");
-                    widgets.addVector2("Anchor ",[anchor.x, anchor.y],{precision: 2,min: 0, max:1,callback:(e)=>{
-                            let xDiff = (e[0]-this.selectedNode.pixiObj.anchor.x) * this.selectedNode.pixiObj.width;
-                            let yDiff = (e[1]-this.selectedNode.pixiObj.anchor.y) * this.selectedNode.pixiObj.height;
-                            let currentXPos = this.selectedNode.pixiObj.position.x;
-                            let currentYPos = this.selectedNode.pixiObj.position.y;
-                            let newXPos = currentXPos+xDiff;
-                            let newYPos = currentYPos+yDiff;
-                            this.selectedNode.pixiObj.anchor.set(e[0],e[1]);
-                            this.selectedNode.pixiObj.position.set(newXPos, newYPos);
-                            widgets.positionWidget.setValue([newXPos, newYPos], false);
+                    widgets.addVector2("Anchor ",[anchor.x, anchor.y],{step:0.05, precision: 2,min: 0, max:1,callback:(e)=>{
+                            //let updatedPos = this.selectedNode.pixiObj.setAnchorAndUpdatePosition(e[0],e[1]);
+                            //widgets.positionWidget.setValue(updatedPos, true);
+                            this.selectedNode.pixiObj.anchor.set(e[0], e[1]);
                         }});
 
                     widgets.addFile("Image", {name:resourceURL});

@@ -44,9 +44,7 @@ export default class Jackpot_HierarchyPanelTree extends LiteGUI.Tree{
         };
 
         this.eventEmitter.on(Jackpot_EventEmitter.CONTEXT_MENU_ITEM_SELECTED, obj =>{
-            /* 1 - WE ADD NEW OBJECT TO THE TREE'
-               2 - WE CREATE NEW OBJECT IN THE CANVAS
-                */
+
                 let newObj = {
                   parentId : parseInt(this.contextMenuFocusItem.data.id,10),
                   selectedItem : obj.detail.item
