@@ -53,6 +53,11 @@ export default class Jackpot_InspectorPanel extends Jackpot_Panel{
                     x:node.pixiObj.pivot.x,
                     y:node.pixiObj.pivot.y,
                 };
+                let size = {
+                    width: node.pixiObj.width,
+                    height: node.pixiObj.height
+                };
+
                 let rotation = node.pixiObj.rotation;
                 let visibility = node.pixiObj.visible;
 
@@ -75,8 +80,10 @@ export default class Jackpot_InspectorPanel extends Jackpot_Panel{
                         this.selectedNode.pixiObj.rotation = e*Math.PI/180;
                         this.eventEmitter.emit(Jackpot_EventEmitter.NODE_PROPERTY_UPDATED);
                     }});
-                widgets.addVector2("Pivot ",[pivot.x, pivot.y],{ step:0.1, precision: 1,callback:(e)=>{
-                        this.selectedNode.pixiObj.pivot.set(e[0]*this.selectedNode.pixiObj.width,e[1]*this.selectedNode.pixiObj.height);
+                widgets.addVector2("Pivot ",[pivot.x/size.width, pivot.y/size.height],{ step:0.1, precision: 1,callback:(e)=>{
+                        this.selectedNode.pixiObj.pivot.set(
+                            e[0]*this.selectedNode.pixiObj.width/this.selectedNode.pixiObj.scale.x,
+                            e[1]*this.selectedNode.pixiObj.height/this.selectedNode.pixiObj.scale.y);
                         this.eventEmitter.emit(Jackpot_EventEmitter.NODE_PROPERTY_UPDATED);
                     }});
             }
