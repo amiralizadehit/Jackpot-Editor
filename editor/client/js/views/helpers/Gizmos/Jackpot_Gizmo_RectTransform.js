@@ -29,59 +29,79 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
         this.addChild(this.parts["pivot"]);
         this._init();
     }
-    _init(){
+    _init() {
         const keys = Object.keys(this.parts);
-        for(let key of keys){
+        for (let key of keys) {
             const object = this.parts[key];
             object.interactive = true;
-            if(key.includes("pinpoint")){
-                if(key==="pinpoint_uL" || key==="pinpoint_dR"){
-                    object.mouseover = (e)=>{
-                        object.cursor = 'nwse-resize';
-                    }
+            if (key.includes("pinpoint")) {
+                switch (key) {
+                    case "pinpoint_uL":
+                        object.mouseover = (e) => {
+                            object.cursor = 'nwse-resize';
+                        };
+                        break;
+                    case "pinpoint_dR":
+                        object.mouseover = (e) => {
+                            object.cursor = 'nwse-resize';
+                        };
+                        break;
+                    case "pinpoint_uR":
+                        object.mouseover = (e) => {
+                            object.cursor = 'nesw-resize';
+                        };
+                        break;
+                    case "pinpoint_dL":
+                        object.mouseover = (e) => {
+                            object.cursor = 'nesw-resize';
+                        };
+                        break;
                 }
-                else{
-                    object.mouseover = (e)=>{
-                        object.cursor = 'nesw-resize';
-                    }
-                }
-            }
-            else if(key.includes("rectangle")){
-                object.mouseover = (e)=>{
-                    if(key==="rectangle_up" || key==="rectangle_down"){
-                        object.mouseover = (e)=>{
+            } else if (key.includes("rectangle")) {
+                switch (key) {
+                    case "rectangle_up":
+                        object.mouseover = (e) => {
                             object.cursor = 'ns-resize';
-                        }
-                    }
-                    else{
-                        object.mouseover = (e)=>{
+                        };
+                        break;
+                    case "rectangle_down":
+                        object.mouseover = (e) => {
+                            object.cursor = 'ns-resize';
+                        };
+                        break;
+                    case "rectangle_left":
+                        object.mouseover = (e) => {
                             object.cursor = 'ew-resize';
                         };
-                    }
-                };
-                object.mousedown = (e)=>{
-                    const pixiObj = this.selectedNode.pixiObj;
-                    let mouseInitPos = e.data.getLocalPosition(this.stage);
-                    switch (key) {
-                        case "rectangle_right":
-                            //pixiObj.setAnchorAndUpdatePosition(0,0.5);
-                            object.mousemove = (e)=>{
+                        break;
+                    case "rectangle_right":
+                        object.mouseover = (e) => {
+                            object.cursor = 'ew-resize';
+                        };
+                        object.mousedown = (e) => {
+                            const pixiObj = this.selectedNode.pixiObj;
+                            let mouseInitPos = e.data.getLocalPosition(this.stage);
+                            object.mousemove = (e) => {
                                 const mouseCurrentPos = e.data.getLocalPosition(this.stage);
                                 const posDiff = [mouseCurrentPos.x - mouseInitPos.x, mouseCurrentPos.y - mouseInitPos.y];
-                                pixiObj.width+=posDiff[0];
+                                pixiObj.width += posDiff[0];
                                 mouseInitPos = mouseCurrentPos;
+                                this.update();
                             };
-                            break;
-                    }
-                };
-                object.mouseup = (e)=>{
-                    this.selectedNode.pixiObj.mousemove = null;
+                        };
+                        break;
                 }
-            } //Pivot point
+            }
+         //Pivot
             else{
                 object.buttonMode = true;
             }
+
+            object.mouseup = (e) => {
+                object.mousemove = null
+            };
         }
+
     }
 
     draw(node){
@@ -107,22 +127,22 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
         this._setGraphicsLineStyle(parts["rectangle_up"],1,0xA0A0A0);
         parts["rectangle_up"].position.set(0,0);
         parts["rectangle_up"].lineTo(size[0],0);
-        parts["rectangle_up"].hitArea = new PIXI.Rectangle(offsetHorizontal,-5,size[0] - 2 * offsetHorizontal ,10);
+        parts["rectangle_up"].hitArea = new PIXI.Rectangle(offsetHorizontal,-10,size[0] - 2 * offsetHorizontal ,20);
 
         this._setGraphicsLineStyle(parts["rectangle_down"],1,0xA0A0A0);
         parts["rectangle_down"].position.set(0,size[1]);
         parts["rectangle_down"].lineTo(size[0],0);
-        parts["rectangle_down"].hitArea = new PIXI.Rectangle(offsetHorizontal,-5,size[0]- 2 * offsetHorizontal,10);
+        parts["rectangle_down"].hitArea = new PIXI.Rectangle(offsetHorizontal,-10,size[0]- 2 * offsetHorizontal,20);
 
         this._setGraphicsLineStyle(parts["rectangle_left"],1,0xA0A0A0);
         parts["rectangle_left"].position.set(0,0);
         parts["rectangle_left"].lineTo(0,size[1]);
-        parts["rectangle_left"].hitArea = new PIXI.Rectangle(-5,offsetVertical,10,size[1]-  2 * offsetVertical);
+        parts["rectangle_left"].hitArea = new PIXI.Rectangle(-10,offsetVertical,20,size[1]-  2 * offsetVertical);
 
         this._setGraphicsLineStyle(parts["rectangle_right"],1,0xA0A0A0);
         parts["rectangle_right"].position.set(size[0],0);
         parts["rectangle_right"].lineTo(0,size[1]);
-        parts["rectangle_right"].hitArea = new PIXI.Rectangle(-5,offsetVertical,10,size[1]- 2 * offsetVertical);
+        parts["rectangle_right"].hitArea = new PIXI.Rectangle(-10,offsetVertical,20,size[1]- 2 * offsetVertical);
 
         // Pin Points
         this._setGraphicsLineStyle(parts["pinpoint_uL"],1,0x0066ff,true);
