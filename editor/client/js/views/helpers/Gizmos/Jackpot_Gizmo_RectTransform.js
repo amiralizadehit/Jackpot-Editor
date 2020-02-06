@@ -63,6 +63,24 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
                         object.mouseover = (e) => {
                             object.cursor = 'ns-resize';
                         };
+                        object.mousedown = (e) => {
+                            const pixiObj = this.selectedNode.pixiObj;
+                            this.objPiv = [this.selectedNode.pixiObj.pivot.x, this.selectedNode.pixiObj.pivot.y];
+                            //TransformHelper.setPivotAndKeepPosition(pixiObj,pixiObj.width/2, pixiObj.height);
+                            console.log(pixiObj);
+                            pixiObj.pivot.set(pixiObj.width/2, pixiObj.height);
+                            pixiObj.updateTransform();
+                            console.log(pixiObj);
+
+                            let mouseInitPos = e.data.getLocalPosition(this.stage);
+                            object.mousemove = (e) => {
+                                const mouseCurrentPos = e.data.getLocalPosition(this.stage);
+                                const posDiff = [mouseCurrentPos.x - mouseInitPos.x, mouseCurrentPos.y - mouseInitPos.y];
+                                pixiObj.height -= posDiff[1];
+                                mouseInitPos = mouseCurrentPos;
+                                this.update();
+                            };
+                        };
                         break;
                     case "rectangle_down":
                         object.mouseover = (e) => {
@@ -80,6 +98,8 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
                         };
                         object.mousedown = (e) => {
                             const pixiObj = this.selectedNode.pixiObj;
+                            this.objPiv = [this.selectedNode.pixiObj.pivot.x, this.selectedNode.pixiObj.pivot.y];
+                            TransformHelper.setPivotAndKeepPosition(pixiObj,0, pixiObj.height/2);
                             let mouseInitPos = e.data.getLocalPosition(this.stage);
                             object.mousemove = (e) => {
                                 const mouseCurrentPos = e.data.getLocalPosition(this.stage);
@@ -98,7 +118,10 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
             }
 
             object.mouseup = (e) => {
-                object.mousemove = null
+                object.mousemove = null;
+                /* HERE WE SHOULD CHECK FOR THE SCALE FACTOR BECAUSE WE MIGHT HAVE CHANGED THE SIZE, SO "this.objPiv" WON'T END UP AT THE SAME POSITION */
+                //TransformHelper.setPivotAndKeepPosition(this.selectedNode.pixiObj, this.objPiv[0], this.objPiv[1]);
+                this.update();
             };
         }
 
@@ -118,6 +141,7 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
         this.position.set(position[0],position[1]);
         this.pivot.set(pivot[0] , pivot[1]);
         this.rotation = globalTransform[1];
+
 
         parts.forEach(item=>{
             item.clear();
