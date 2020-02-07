@@ -84,6 +84,7 @@ export default class Jackpot_InspectorPanel extends Jackpot_Panel{
                         this.selectedNode.pixiObj.pivot.set(
                             e[0]*this.selectedNode.pixiObj.width/this.selectedNode.pixiObj.scale.x,
                             e[1]*this.selectedNode.pixiObj.height/this.selectedNode.pixiObj.scale.y);
+
                         this.eventEmitter.emit(Jackpot_EventEmitter.NODE_PROPERTY_UPDATED);
                     }});
             }
