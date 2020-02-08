@@ -8,7 +8,11 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
         this.parts = [];
         this.stage = stage;
         this.selectedNode = null;
+        this.interactive = true;
         this.rectangleHitAreaOffset = 20;
+
+        this.parts["rectangle_core"] = new Jackpot_PIXI_Graphics();
+        this.addChild(this.parts["rectangle_core"]);
         this.parts["rectangle_up"] = new Jackpot_PIXI_Graphics();
         this.addChild(this.parts["rectangle_up"]);
         this.parts["rectangle_down"] = new Jackpot_PIXI_Graphics();
@@ -30,6 +34,7 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
         this._init();
     }
     _init() {
+
         const keys = Object.keys(this.parts);
         for (let key of keys) {
             const object = this.parts[key];
@@ -52,10 +57,14 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
                         };
                         object.mousedown = (e) => {
                             const pixiObj = this.selectedNode.pixiObj;
-                            this._rectangleMouseDown(e,0, pixiObj.height / pixiObj.scale.y);
+                            this._rectangleMouseDown(e, object,0, pixiObj.height / pixiObj.scale.y);
                             object.mousemove = (e) => {
                                 let posDiff = this._rectangleMouseMove(e);
-                                pixiObj.width -= posDiff[0];
+                                let angle = Math.atan(posDiff[1]/posDiff[0]);
+                                angle+=pixiObj.rotation;
+                                let dis = this._calculateMagnitude(posDiff);
+                                pixiObj.width += dis * Math.cos(angle);
+                                pixiObj.height += dis * Math.sin(angle);
                                 this.update();
                             };
                         };
@@ -68,13 +77,25 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
                 }
             } else if (key.includes("rectangle")) {
                 switch (key) {
+                    case"rectangle_core":
+                        object.mousedown = (e)=>{
+                            this._rectangleMouseDown(e, object);
+                            object.mousemove = (e)=>{
+                                const pixiObj = this.selectedNode.pixiObj;
+                                let posDiff = this._rectangleMouseMove(e);
+                                pixiObj.position.x+=posDiff[0];
+                                pixiObj.position.y+=posDiff[1];
+                                this.update();
+                            };
+                        };
+                        break;
                     case "rectangle_up":
                         object.mouseover = (e) => {
                             object.cursor = 'ns-resize';
                         };
                         object.mousedown = (e) => {
                             const pixiObj = this.selectedNode.pixiObj;
-                            this._rectangleMouseDown(e,pixiObj.width/(2*pixiObj.scale.x), pixiObj.height/pixiObj.scale.y);
+                            this._rectangleMouseDown(e, object,pixiObj.width/(2*pixiObj.scale.x), pixiObj.height/pixiObj.scale.y);
                             object.mousemove = (e) => {
                                 let posDiff = this._rectangleMouseMove(e);
                                 pixiObj.height += posDiff[0]*Math.sin(Math.PI - pixiObj.rotation)+posDiff[1]*Math.cos(Math.PI - pixiObj.rotation);
@@ -88,7 +109,7 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
                         };
                         object.mousedown = (e) => {
                             const pixiObj = this.selectedNode.pixiObj;
-                            this._rectangleMouseDown(e,pixiObj.width / (2 * pixiObj.scale.x), 0);
+                            this._rectangleMouseDown(e, object,pixiObj.width / (2 * pixiObj.scale.x), 0);
                             object.mousemove = (e) => {
                                 let posDiff = this._rectangleMouseMove(e);
                                 pixiObj.height += posDiff[0]*Math.sin(pixiObj.rotation)+posDiff[1]*Math.cos(pixiObj.rotation);
@@ -102,7 +123,7 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
                         };
                         object.mousedown = (e) => {
                             const pixiObj = this.selectedNode.pixiObj;
-                            this._rectangleMouseDown(e,pixiObj.width / pixiObj.scale.x, pixiObj.height / (2 * pixiObj.scale.y));
+                            this._rectangleMouseDown(e, object,pixiObj.width / pixiObj.scale.x, pixiObj.height / (2 * pixiObj.scale.y));
                             object.mousemove = (e) => {
                                 let posDiff = this._rectangleMouseMove(e);
                                 pixiObj.width -= posDiff[0]*Math.cos(pixiObj.rotation)+posDiff[1]*Math.sin(pixiObj.rotation);
@@ -116,11 +137,9 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
                         };
                         object.mousedown = (e) => {
                             const pixiObj = this.selectedNode.pixiObj;
-                            this._rectangleMouseDown(e,0, pixiObj.height/(2*pixiObj.scale.y));
+                            this._rectangleMouseDown(e,object ,0, pixiObj.height/(2*pixiObj.scale.y));
                             object.mousemove = (e) => {
                                 let posDiff = this._rectangleMouseMove(e);
-                                let angle = Math.atan(posDiff[1]/posDiff[0]);
-                                angle+=pixiObj.rotation;
                                 pixiObj.width += posDiff[0]*Math.cos(pixiObj.rotation)+posDiff[1]*Math.sin(pixiObj.rotation);
                                 this.update();
                             };
@@ -132,21 +151,32 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
             else{
                 object.buttonMode = true;
             }
-
-            object.mouseup = (e) => {
-                this.busy = false;
-                object.mousemove = null;
-                TransformHelper.setPivotAndKeepPosition(this.selectedNode.pixiObj, this.objPiv[0], this.objPiv[1]);
-                this.update();
-            };
         }
-
+        document.addEventListener("mouseup", (e)=>{
+            if(this.busy){
+                this.busy = false;
+                this.focusedPart.mousemove = null;
+                if (this.pivotChanged) {
+                    TransformHelper.setPivotAndKeepPosition(this.selectedNode.pixiObj, this.objPiv[0], this.objPiv[1]);
+                    this.update();
+                }
+            }
+        });
+        this.debugging  = new PIXI.Graphics();
+        this.addChild(this.debugging);
+    }
+    _calculateMagnitude(posDiff){
+        return Math.sqrt(Math.pow(posDiff[0],2)+ Math.pow(posDiff[1],2));
     }
 
-    _rectangleMouseDown(e, pivX, pivY){
+    _rectangleMouseDown(e, object, pivX, pivY){
         this.busy = true; //Here gizmo is busy
-        this.objPiv = [this.selectedNode.pixiObj.pivot.x, this.selectedNode.pixiObj.pivot.y];
-        TransformHelper.setPivotAndKeepPosition(this.selectedNode.pixiObj,pivX, pivY);
+        this.focusedPart = object;
+        if(pivX!==undefined && pivY!==undefined){
+            this.objPiv = [this.selectedNode.pixiObj.pivot.x, this.selectedNode.pixiObj.pivot.y];
+            TransformHelper.setPivotAndKeepPosition(this.selectedNode.pixiObj,pivX, pivY);
+            this.pivotChanged = true;
+        }
         this.mouseInitPos = e.data.getLocalPosition(this.stage);
     }
     _rectangleMouseMove(e){
@@ -178,6 +208,11 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
         this.position.set(position[0],position[1]);
         this.pivot.set(pivot[0] , pivot[1]);
         this.rotation = globalTransform[1];
+        //this.hitArea = new PIXI.Rectangle(30, 30, size[0]-60, size[1]-60);
+
+        //this.debugging.clear();
+        //this.debugging.lineStyle(3, 0xFFF);
+        //this.debugging.drawRect( 20, 20, size[0]-40, size[1]-40);
 
 
         parts.forEach(item=>{
@@ -185,6 +220,8 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
         });
 
         //Rectangle
+        parts["rectangle_core"].hitArea = new PIXI.Rectangle(20, 20, size[0]-40, size[1]-40);
+
         this._setGraphicsLineStyle(parts["rectangle_up"],1,0xA0A0A0);
         parts["rectangle_up"].position.set(0,0);
         parts["rectangle_up"].lineTo(size[0],0);
