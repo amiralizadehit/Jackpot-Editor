@@ -45,7 +45,7 @@ export default class Jackpot_SceneCanvas extends Jackpot_Canvas{
         this.stage.addChild(this.gizmoz);
     }
     createGizmos(){
-        this.rectTransformGizmos = new Jackpot_Gizmo_RectTransform(this.stage);
+        this.rectTransformGizmos = new Jackpot_Gizmo_RectTransform(this.renderer, this.stage);
         this.gizmoz.addChild(this.rectTransformGizmos);
     }
 
