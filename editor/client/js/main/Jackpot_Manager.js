@@ -2,9 +2,7 @@ import Jackpot_EventEmitter from "../utils/Jackpot_EventEmitter.js";
 import Jackpot_MainLayout from "../views/Jackpot_MainLayout.js";
 import Jackpot_IO from "../utils/Jackpot_IO.js";
 import {NodeTypes} from "../utils/Jackpot_EditorConfiguration.js";
-
 import Jackpot_TreeManager from "./Jackpot_TreeManager.js";
-import Jackpot_AssetLoader from "../utils/Jackpot_AssetLoader.js";
 
 export default class Jackpot_Manager {
     constructor(){
@@ -36,19 +34,7 @@ export default class Jackpot_Manager {
 
     _processNewObject(obj){
         console.log(obj.detail);
-        switch (obj.detail.selectedItem) {
-            case NodeTypes.CONTAINER:
-                console.log("Container Selected");
-                break;
-            case NodeTypes.SPRITE:
-                console.log("Sprite Selected");
-                break;
-
-
-        }
-    }
-
-    getGameObjectTree(){
+        this.treeManager.addNewNode(obj.detail.parentId, obj.detail.selectedItem)
 
     }
 }

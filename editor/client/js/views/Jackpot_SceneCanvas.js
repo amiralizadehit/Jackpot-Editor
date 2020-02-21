@@ -1,8 +1,6 @@
 import Jackpot_Canvas from "./helpers/Jackpot_Canvas.js";
 import Jackpot_PIXI_Container from "../game/Jackpot_PIXI_Container.js";
-import Jackpot_PIXI_Graphics from "../game/Jackpot_PIXI_Graphics.js";
 import Jackpot_EventEmitter from "../utils/Jackpot_EventEmitter.js";
-import TransformHelper from "../utils/helpers/Jackpot_TransformHelper.js";
 import Jackpot_Gizmo_RectTransform from "./helpers/Gizmos/Jackpot_Gizmo_RectTransform.js";
 
 
@@ -40,6 +38,7 @@ export default class Jackpot_SceneCanvas extends Jackpot_Canvas{
     }
 
     renderTree(){
+        this.stage.removeChildren();
         this.treeManager.getGameArrayObj()["0"].children.forEach(stageChild=>{
             this.stage.addChild(stageChild.pixiObj);
         });

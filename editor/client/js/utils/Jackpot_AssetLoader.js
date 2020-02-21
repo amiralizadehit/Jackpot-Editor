@@ -26,4 +26,13 @@ export default class Jackpot_AssetLoader{
     static getTexture(name){
         return PIXI.Loader.shared.resources[name].texture;
     }
+
+
+    //Editor
+    static loadEditorResources(callback){
+        let imgFolderURL = "./editor/client/img";
+
+        PIXI.Loader.shared.add("placeholder_sprite", imgFolderURL + "/placeholder_sprite.jpg");
+        PIXI.Loader.shared.load(callback);
+    }
 }

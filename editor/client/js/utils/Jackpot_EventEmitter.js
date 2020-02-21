@@ -25,3 +25,4 @@ Jackpot_EventEmitter.CREATE_NEW_OBJECT = "createnewobject";
 Jackpot_EventEmitter.RENDER_TREE = "rendertree";
 Jackpot_EventEmitter.NODE_SELECTED = "nodeselected";
 Jackpot_EventEmitter.NODE_PROPERTY_UPDATED="nodepropertyupdated";
+Jackpot_EventEmitter.NEW_OBJECT_CREATED="newobjectcreated";

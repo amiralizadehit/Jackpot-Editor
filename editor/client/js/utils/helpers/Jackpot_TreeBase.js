@@ -51,7 +51,6 @@ export class Jackpot_TreeBase {
                 node.children.push(newNode)
             }
         });
-
     }
 
     remove(nodeId){

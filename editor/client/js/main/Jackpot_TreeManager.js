@@ -93,10 +93,9 @@ export default class Jackpot_TreeManager {
                         throw new Error("The game node type is not supported!");
                     }
                 }
-                let parentNode = _GameTreeObj.search(newGameNode.parentId);
-                if(!parentNode.isRoot){
-                    parentNode.pixiObj.addChild(newGameNode.pixiObj)
-                }
+                let parentNode = _GameArrayObj[newGameNode.parentId];
+                    parentNode.pixiObj.addChild(newGameNode.pixiObj);
+
 
                 if(newGameNode.pixiObj instanceof PIXI.DisplayObject){
                     this._setDisplayObjectProperties(node, newGameNode);
@@ -113,24 +112,59 @@ export default class Jackpot_TreeManager {
     }
 
     _setDisplayObjectProperties(referenceNode, newNode) {
-        if (referenceNode.properties === "default")
-            return;
-        newNode.pixiObj.position.set(referenceNode.properties.position.x, referenceNode.properties.position.y);
-        newNode.pixiObj.scale.set(referenceNode.properties.scale.x, referenceNode.properties.scale.y);
-        newNode.pixiObj.rotation = referenceNode.properties.rotation;
-        newNode.pixiObj.pivot.set(referenceNode.properties.pivot.x, referenceNode.properties.pivot.y);
-        newNode.pixiObj.visible = referenceNode.properties.visible;
-        newNode.pixiObj.interactive = true;
-
+        if (!referenceNode || referenceNode.properties === "default")
+            newNode.pixiObj.interactive = true;
+        else{
+            newNode.pixiObj.position.set(referenceNode.properties.position.x, referenceNode.properties.position.y);
+            newNode.pixiObj.scale.set(referenceNode.properties.scale.x, referenceNode.properties.scale.y);
+            newNode.pixiObj.rotation = referenceNode.properties.rotation;
+            newNode.pixiObj.pivot.set(referenceNode.properties.pivot.x, referenceNode.properties.pivot.y);
+            newNode.pixiObj.visible = referenceNode.properties.visible;
+            newNode.pixiObj.interactive = true;
+        }
     }
 
     _setSpriteObjectProperties(referenceNode, newNode){
         if(referenceNode.properties==="default")
             return;
         newNode.pixiObj.anchor.set(referenceNode.properties.anchor.x, referenceNode.properties.anchor.y);
+        this._addSpriteObjectListeners(newNode);
+
+    }
+    _addSpriteObjectListeners(newNode){
         newNode.pixiObj.mouseup = (e) => {
             this.eventEmitter.emit(Jackpot_EventEmitter.NODE_SELECTED, {"detail": newNode});
         };
+    }
+
+    addNewNode(parentId, type){
+        let newGameNode = new Jackpot_GameNode({
+            parentId: `${parentId}`,
+            title: `New ${type}`,
+            type: type,
+            isRoot:false,
+            children: [],
+        });
+
+        switch (type) {
+            case NodeTypes.CONTAINER:
+                newGameNode.pixiObj = new Jackpot_PIXI_Container();
+                _GameTreeObj.add(newGameNode);
+                break;
+            case NodeTypes.SPRITE:
+                let texture = Jackpot_AssetLoader.getTexture("placeholder_sprite");
+                if(!texture)
+                    throw new Error("Texture not found!");
+                newGameNode.pixiObj = new Jackpot_PIXI_Sprite(texture);
+                _GameTreeObj.add(newGameNode);
+                this._addSpriteObjectListeners(newGameNode);
+                break;
+        }
+        _GameArrayObj[newGameNode.id]=newGameNode;
+        this._setDisplayObjectProperties(null, newGameNode);
+        let parentNode = _GameArrayObj[newGameNode.parentId];
+        parentNode.pixiObj.addChild(newGameNode.pixiObj);
+        this.eventEmitter.emit(Jackpot_EventEmitter.NEW_OBJECT_CREATED,{"detail":newGameNode});
     }
 
 

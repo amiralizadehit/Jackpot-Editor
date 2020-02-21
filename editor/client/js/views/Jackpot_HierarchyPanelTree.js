@@ -49,7 +49,6 @@ export default class Jackpot_HierarchyPanelTree extends LiteGUI.Tree{
                   parentId : parseInt(this.contextMenuFocusItem.data.id,10),
                   selectedItem : obj.detail.item
                 };
-
                 this.eventEmitter.emit(Jackpot_EventEmitter.CREATE_NEW_OBJECT, {"detail" : newObj})
         });
 
@@ -59,6 +58,16 @@ export default class Jackpot_HierarchyPanelTree extends LiteGUI.Tree{
             this.unmarkAllAsSelected();
             this.selectedNodes = [this.gameArrayObj[e.detail.id]];
             this.addItemToSelection(e.detail.id);
+        });
+        this.eventEmitter.on(Jackpot_EventEmitter.NEW_OBJECT_CREATED,(e)=>{
+            //this.unmarkAllAsSelected();
+            this.insertItem({
+                id:e.detail.id,
+                content: e.detail.content,
+                children: e.detail.children
+            },e.detail.parentId,null,{selected:true});
+            this.selectedNodes=[this.gameArrayObj[e.detail.id]];
+            this.eventEmitter.emit(Jackpot_EventEmitter.NODE_SELECTED,{detail: e.detail});
         });
     }
 
