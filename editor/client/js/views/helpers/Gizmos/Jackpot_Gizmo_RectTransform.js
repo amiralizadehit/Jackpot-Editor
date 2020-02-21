@@ -56,9 +56,8 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
                                 let landa = Math.atan2(-posDiff[0], -posDiff[1]);
                                 landa+=globalTransform[1];
                                 let dist = this._calculateMagnitude(posDiff);
-
-                                pixiObj.height += Math.cos(landa)*dist/parentScale[1];
-                                pixiObj.width += Math.sin(landa)*dist/parentScale[0];
+                                pixiObj._setSize(pixiObj.width+Math.sin(landa)*dist/parentScale[0]
+                                    ,pixiObj.height+Math.cos(landa)*dist/parentScale[1],"gizmo");
                                 this.update();
                             };
                         };
@@ -77,8 +76,8 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
                                 let landa = Math.atan2(posDiff[0], posDiff[1]);
                                 landa+=globalTransform[1];
                                 let dist = this._calculateMagnitude(posDiff);
-                                pixiObj.height += Math.cos(landa)*dist/parentScale[1];
-                                pixiObj.width += Math.sin(landa)*dist/parentScale[0];
+                                pixiObj._setSize(pixiObj.width+Math.sin(landa)*dist/parentScale[0]
+                                    ,pixiObj.height+Math.cos(landa)*dist/parentScale[1],"gizmo");
                                 this.update();
                             };
                         };
@@ -97,8 +96,8 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
                                 let landa = Math.atan2(-posDiff[1], posDiff[0]);
                                 landa+=globalTransform[1];
                                 let dist = this._calculateMagnitude(posDiff);
-                                pixiObj.height += Math.sin(landa)*dist/parentScale[1];
-                                pixiObj.width += Math.cos(landa)*dist/parentScale[0];
+                                pixiObj._setSize(pixiObj.width+Math.cos(landa)*dist/parentScale[0]
+                                    ,pixiObj.height+Math.sin(landa)*dist/parentScale[1],"gizmo");
                                 this.update();
                             };
                         };
@@ -117,8 +116,8 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
                                 let landa = Math.atan2(posDiff[1], -posDiff[0]);
                                 landa+=globalTransform[1];
                                 let dist = this._calculateMagnitude(posDiff);
-                                pixiObj.height += Math.sin(landa)*dist / parentScale[1];
-                                pixiObj.width += Math.cos(landa)*dist / parentScale[0];
+                                pixiObj._setSize(pixiObj.width+Math.cos(landa)*dist / parentScale[0]
+                                    ,pixiObj.height+Math.sin(landa)*dist / parentScale[1],"gizmo");
                                 this.update();
                             };
                         };
@@ -138,8 +137,9 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
                                 let localXPosition = posDiff[0];
                                 let cos = Math.cos(globalTransform[1] - pixiObj.rotation);
                                 let sin = Math.sin(globalTransform[1] - pixiObj.rotation);
-                                pixiObj.position.x += (localXPosition * cos + localYPosition * sin) / parentScale[0];
-                                pixiObj.position.y += (localYPosition * cos - localXPosition * sin) / parentScale[1];
+                                pixiObj._setPosition(
+                                     pixiObj.position.x + (localXPosition * cos + localYPosition * sin) / parentScale[0]
+                                    ,pixiObj.position.y + (localYPosition * cos - localXPosition * sin) / parentScale[1],"gizmo");
                                 this.update();
                             };
                         };
@@ -155,7 +155,7 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
                             this._rectangleMouseDown(e, object,pixiObj.width/(2*pixiObj.scale.x), pixiObj.height/pixiObj.scale.y);
                             object.mousemove = (e) => {
                                 let posDiff = this._rectangleMouseMove(e);
-                                pixiObj.height += (posDiff[0]*Math.sin(globalTransform[1])-posDiff[1]*Math.cos(globalTransform[1]))/parentScale[1];
+                                pixiObj._setSize(pixiObj.width,pixiObj.height+(posDiff[0]*Math.sin(globalTransform[1])-posDiff[1]*Math.cos(globalTransform[1]))/parentScale[1],"gizmo");
                                 this.update();
                             };
                         };
@@ -171,7 +171,7 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
                             this._rectangleMouseDown(e, object,pixiObj.width / (2 * pixiObj.scale.x), 0);
                             object.mousemove = (e) => {
                                 let posDiff = this._rectangleMouseMove(e);
-                                pixiObj.height += (-posDiff[0]*Math.sin(globalTransform[1])+posDiff[1]*Math.cos(globalTransform[1]))/parentScale[1];
+                                pixiObj._setSize(pixiObj.width,pixiObj.height+(-posDiff[0]*Math.sin(globalTransform[1])+posDiff[1]*Math.cos(globalTransform[1]))/parentScale[1],"gizmo");
                                 this.update();
                             };
                         };
@@ -187,7 +187,7 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
                             this._rectangleMouseDown(e, object,pixiObj.width / pixiObj.scale.x, pixiObj.height / (2 * pixiObj.scale.y));
                             object.mousemove = (e) => {
                                 let posDiff = this._rectangleMouseMove(e);
-                                pixiObj.width -= (posDiff[0]*Math.cos(globalTransform[1])+posDiff[1]*Math.cos(Math.PI/2 - globalTransform[1]))/parentScale[0];
+                                pixiObj._setSize(pixiObj.width - (posDiff[0]*Math.cos(globalTransform[1])+posDiff[1]*Math.cos(Math.PI/2 - globalTransform[1]))/parentScale[0],pixiObj.height,"gizmo");
                                 this.update();
                             };
                         };
@@ -203,7 +203,10 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
                             this._rectangleMouseDown(e,object ,0, pixiObj.height/(2*pixiObj.scale.y));
                             object.mousemove = (e) => {
                                 let posDiff = this._rectangleMouseMove(e);
-                                pixiObj.width += (posDiff[0]*Math.cos(globalTransform[1])+posDiff[1]*Math.sin(globalTransform[1]))/parentScale[0];
+                                pixiObj._setSize(
+                                    pixiObj.width + (posDiff[0]*Math.cos(globalTransform[1])+posDiff[1]*Math.sin(globalTransform[1]))/parentScale[0]
+                                    ,pixiObj.height
+                                    ,"gizmo");
                                 this.update();
                             };
                         };
@@ -220,7 +223,7 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
                 this.busy = false;
                 this.focusedPart.mousemove = null;
                 if (this.pivotChanged) {
-                    TransformHelper.setPivotAndKeepPosition(this.selectedNode.pixiObj, this.objPiv[0], this.objPiv[1]);
+                    TransformHelper.setPivotAndKeepPosition(this.selectedNode.pixiObj, this.objPiv[0], this.objPiv[1],"gizmo");
                     this.update();
                 }
             }
@@ -238,7 +241,7 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
         this.focusedPart = object;
         if(pivX!==undefined && pivY!==undefined){
             this.objPiv = [this.selectedNode.pixiObj.pivot.x, this.selectedNode.pixiObj.pivot.y];
-            TransformHelper.setPivotAndKeepPosition(this.selectedNode.pixiObj,pivX, pivY);
+            TransformHelper.setPivotAndKeepPosition(this.selectedNode.pixiObj,pivX, pivY,"gizmo");
             this.pivotChanged = true;
         }
         this.mouseInitPos = e.data.getLocalPosition(this.stage);

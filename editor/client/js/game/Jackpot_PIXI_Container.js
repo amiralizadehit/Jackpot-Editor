@@ -1,4 +1,4 @@
-import Jackpot_EventEmitter from "../utils/Jackpot_EventEmitter";
+import Jackpot_EventEmitter from "../utils/Jackpot_EventEmitter.js";
 
 export default class Jackpot_PIXI_Container extends PIXI.Container{
     constructor(){
@@ -27,4 +27,6 @@ export default class Jackpot_PIXI_Container extends PIXI.Container{
         this.pivot.set(x, y);
         this.eventEmitter.emit(Jackpot_EventEmitter.NODE_PROPERTY_UPDATED, {"detail":{"emitter":eventEmitter}});
     }
+
+
 }

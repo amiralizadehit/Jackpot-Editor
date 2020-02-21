@@ -2,13 +2,13 @@ export default class TransformHelper {
 
 }
 
-TransformHelper.setPivotAndKeepPosition = (displayObject, pivotX, pivotY) => {
+TransformHelper.setPivotAndKeepPosition = (displayObject, pivotX, pivotY, eventEmitter) => {
     let pivotDiffX = pivotX - displayObject.pivot.x;
     let pivotDiffY = pivotY - displayObject.pivot.y;
     let currentXPos = displayObject.position.x;
     let currentYPos = displayObject.position.y;
 
-    displayObject.pivot.set(pivotX,pivotY);
+    displayObject._setPivot(pivotX,pivotY,eventEmitter);
 
     let scaledX = pivotDiffX * displayObject.scale.x;
     let scaledY = pivotDiffY * displayObject.scale.y;
@@ -21,7 +21,7 @@ TransformHelper.setPivotAndKeepPosition = (displayObject, pivotX, pivotY) => {
     let newXPos = currentXPos+finalX;
     let newYPos = currentYPos+finalY;
 
-    displayObject.position.set(newXPos, newYPos);
+    displayObject._setPosition(newXPos, newYPos,eventEmitter);
 
     return [newXPos, newYPos];
 };

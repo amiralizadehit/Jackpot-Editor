@@ -27,6 +27,10 @@ export default class Jackpot_InspectorPanel extends Jackpot_Panel{
         this.eventEmitter.on(Jackpot_EventEmitter.NODE_SELECTED,(e)=>{
             this._nodeSelected(e.detail);
         });
+        this.eventEmitter.on(Jackpot_EventEmitter.NODE_PROPERTY_UPDATED, (e)=>{
+            if(e.detail.emitter!=="inspector") //we don't want to catch the event we've emitted
+                this._updateValues();
+        });
     }
 
     _nodeSelected(node){
@@ -34,7 +38,27 @@ export default class Jackpot_InspectorPanel extends Jackpot_Panel{
         this.selectedNode = node;
         this.content.appendChild(_inspectorList[node.id].root);
     }
+    _updateValues(){
 
+        let inspector = _inspectorList[this.selectedNode.id];
+        let pixiObj = this.selectedNode.pixiObj;
+        inspector.positionWidget.setValue(
+            [pixiObj.position.x,
+            pixiObj.position.y],true
+            );
+        inspector.scaleWidget.setValue(
+            [pixiObj.scale.x,
+                pixiObj.scale.y],true
+        );
+        inspector.sizeWidget.setValue(
+            [pixiObj.width,
+                pixiObj.height],true
+        );
+        inspector.rotationWidget.setValue(
+            pixiObj.rotation,true
+        );
+
+    }
 
     _createInspectorWidgets(){
         //this.content.appendChild(widgets.root);

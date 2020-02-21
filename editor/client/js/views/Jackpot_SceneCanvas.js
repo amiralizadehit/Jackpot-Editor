@@ -26,8 +26,9 @@ export default class Jackpot_SceneCanvas extends Jackpot_Canvas{
         this.eventEmitter.on(Jackpot_EventEmitter.NODE_SELECTED,(e)=>{
             this._gameObjectNodeSelected(e.detail);
         });
-        this.eventEmitter.on(Jackpot_EventEmitter.NODE_PROPERTY_UPDATED,()=>{
-            this.rectTransformGizmos.update();
+        this.eventEmitter.on(Jackpot_EventEmitter.NODE_PROPERTY_UPDATED,(e)=>{
+            if(e.detail.emitter!=="gizmo")
+                this.rectTransformGizmos.update();
         });
     }
 
