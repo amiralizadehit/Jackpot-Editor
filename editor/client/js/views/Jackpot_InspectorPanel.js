@@ -67,25 +67,23 @@ export default class Jackpot_InspectorPanel extends Jackpot_Panel{
                     }});
                 widgets.addSection("Rect Transform");
                 widgets.positionWidget = widgets.addVector2("Position",[position.x, position.y],{precision: 3, step:1, callback:(e)=>{
-                        this.selectedNode.pixiObj.position.set(e[0], e[1]);
-                        this.eventEmitter.emit(Jackpot_EventEmitter.NODE_PROPERTY_UPDATED);
+                        this.selectedNode.pixiObj._setPosition(e[0], e[1],"inspector");
                     }});
                 //widgets.addSeparator();
                 widgets.scaleWidget = widgets.addVector2("Scale",[scale.x, scale.y],{precision: 2,callback:(e)=>{
-                        this.selectedNode.pixiObj.scale.set(e[0], e[1]);
-                        this.eventEmitter.emit(Jackpot_EventEmitter.NODE_PROPERTY_UPDATED);
+                        this.selectedNode.pixiObj._setScale(e[0], e[1],"inspector");
+                    }});
+                widgets.sizeWidget = widgets.addVector2("Size",[size.width, size.height],{precision: 2,callback:(e)=>{
+                        this.selectedNode.pixiObj._setSize(e[0], e[1],"inspector");
                     }});
                 //widgets.addSeparator();
                 widgets.rotationWidget = widgets.addSlider("Rotation",rotation,{min:0,max:359,step:1, callback:(e)=>{
-                        this.selectedNode.pixiObj.rotation = e*Math.PI/180;
-                        this.eventEmitter.emit(Jackpot_EventEmitter.NODE_PROPERTY_UPDATED);
+                        this.selectedNode.pixiObj._setRotation(e*Math.PI/180,"inspector");
                     }});
                 widgets.addVector2("Pivot ",[pivot.x/size.width, pivot.y/size.height],{ step:0.1, precision: 1,callback:(e)=>{
-                        this.selectedNode.pixiObj.pivot.set(
+                        this.selectedNode.pixiObj._setPivot(
                             e[0]*this.selectedNode.pixiObj.width/this.selectedNode.pixiObj.scale.x,
                             e[1]*this.selectedNode.pixiObj.height/this.selectedNode.pixiObj.scale.y);
-
-                        this.eventEmitter.emit(Jackpot_EventEmitter.NODE_PROPERTY_UPDATED);
                     }});
             }
             switch (node.type) {
