@@ -10,11 +10,10 @@ import Jackpot_EventEmitter from "../utils/Jackpot_EventEmitter.js";
 
 
 
+
 let _JSONTreeObj = null;
 let _GameTreeObj = null;
-let _GameArrayObj = [];
-let _loadableNodes = [];     //This keeps track of all nodes which need to be loaded before use
-                            // e.g. Sprites, Spine, ...
+let _GameArrayObj = {};
 
 /*
     This class is responsible for all tree operations (creation, updating, ...)
@@ -29,6 +28,18 @@ export default class Jackpot_TreeManager {
     }
     _init(){
         this._createJSONTreeObject();
+        this._addListeners();
+    }
+    _addListeners(){
+        this.eventEmitter.on(Jackpot_EventEmitter.CREATE_NEW_OBJECT, e=>{
+            this._addNewNode(e.detail.parentId, e.detail.selectedItem);
+        });
+        this.eventEmitter.on(Jackpot_EventEmitter.DELETE_OBJECTS, e=>{
+            this._removeNodes(e.detail)
+        });
+        this.eventEmitter.on(Jackpot_EventEmitter.DUPLICATE_OBJECTS, e=>{
+            this._duplicateNode(e.detail);
+        })
     }
 
     _createJSONTreeObject(){
@@ -59,7 +70,7 @@ export default class Jackpot_TreeManager {
             type:"Container",
             children:[],
             properties: "default",
-            pixiObj: new Jackpot_PIXI_Container(), //This PIXI Object has already been created for us.
+            pixiObj: new Jackpot_PIXI_Container(),
             isRoot: true,
         });
         _GameTreeObj = new Jackpot_GameTree(root);
@@ -86,7 +97,6 @@ export default class Jackpot_TreeManager {
                         newGameNode.pixiObj = new Jackpot_PIXI_Sprite(texture);
 
                         _GameTreeObj.add(newGameNode);
-                        _loadableNodes.push(node);
                         break;
                     }
                     default : {
@@ -137,7 +147,7 @@ export default class Jackpot_TreeManager {
         };
     }
 
-    addNewNode(parentId, type){
+    _addNewNode(parentId, type){
         let newGameNode = new Jackpot_GameNode({
             parentId: `${parentId}`,
             title: `New ${type}`,
@@ -148,15 +158,17 @@ export default class Jackpot_TreeManager {
 
         switch (type) {
             case NodeTypes.CONTAINER:
-                newGameNode.pixiObj = new Jackpot_PIXI_Container();
                 _GameTreeObj.add(newGameNode);
+                newGameNode.pixiObj = new Jackpot_PIXI_Container();
                 break;
             case NodeTypes.SPRITE:
-                let texture = Jackpot_AssetLoader.getTexture("placeholder_sprite");
+                _GameTreeObj.add(newGameNode);
+                Jackpot_AssetLoader.addTextureToMapper(newGameNode.id, Jackpot_AssetLoader.TEXTURE_SPRITE_PLACEHOLDER);
+                let texture = Jackpot_AssetLoader.getTexture(newGameNode.id);
                 if(!texture)
                     throw new Error("Texture not found!");
                 newGameNode.pixiObj = new Jackpot_PIXI_Sprite(texture);
-                _GameTreeObj.add(newGameNode);
+
                 this._addSpriteObjectListeners(newGameNode);
                 break;
         }
@@ -167,10 +179,36 @@ export default class Jackpot_TreeManager {
         this.eventEmitter.emit(Jackpot_EventEmitter.NEW_OBJECT_CREATED,{"detail":newGameNode});
     }
 
+    _removeNodes(nodes){
+        nodes.forEach(node=>{
+            _GameTreeObj.remove(node.id);
+        });
+        _GameArrayObj = {};
+        _GameTreeObj.traverse(node=>{
+            _GameArrayObj[node.id] = node;
+        })
+    }
 
+    _duplicateNode(node){
+        let clone = {...node};
+
+
+        clone.content = `${node.content}_Clone`;
+        _GameTreeObj.add(clone);
+        this._addToArrayObjRecursively(clone);
+        _GameArrayObj[clone.parentId].pixiObj.addChild(clone.pixiObj);
+        this.eventEmitter.emit(Jackpot_EventEmitter.OBJECT_DUPLICATED, {"detail":clone});
+    }
+
+    _addToArrayObjRecursively(node){
+        _GameArrayObj[node.id] = node;
+        node.children.forEach(child=>{
+           this._addToArrayObjRecursively(child);
+        });
+    }
 
     getHierarchyTreeObj(){
-        return _JSONTreeObj.getRoot();
+        return _GameTreeObj.getRoot();
     }
 
     generateGameTree(callback){
@@ -193,7 +231,4 @@ export default class Jackpot_TreeManager {
         return _GameTreeObj;
     }
 
-    getLoadableNodes(){
-        return _loadableNodes;
-    }
 }

@@ -21,12 +21,15 @@ export default class Jackpot_SceneCanvas extends Jackpot_Canvas{
     }
     _addListeners() {
         super._addListeners();
-        this.eventEmitter.on(Jackpot_EventEmitter.NODE_SELECTED,(e)=>{
+        this.eventEmitter.on(Jackpot_EventEmitter.NODE_SELECTED,e=>{
             this._gameObjectNodeSelected(e.detail);
         });
-        this.eventEmitter.on(Jackpot_EventEmitter.NODE_PROPERTY_UPDATED,(e)=>{
+        this.eventEmitter.on(Jackpot_EventEmitter.NODE_PROPERTY_UPDATED,e=>{
             if(e.detail.emitter!=="gizmo")
                 this.rectTransformGizmos.update();
+        });
+        this.eventEmitter.on(Jackpot_EventEmitter.DELETE_OBJECTS, e =>{
+            this._gameObjectNodeDeleted();
         });
     }
 
@@ -36,12 +39,16 @@ export default class Jackpot_SceneCanvas extends Jackpot_Canvas{
             this.rectTransformGizmos.draw(node);
         }
     }
+    _gameObjectNodeDeleted(){
+        this.rectTransformGizmos.erase();
+    }
 
     renderTree(){
         this.stage.removeChildren();
-        this.treeManager.getGameArrayObj()["0"].children.forEach(stageChild=>{
+        this.stage = this.treeManager.getGameArrayObj()["0"].pixiObj;
+        /*this.treeManager.getGameArrayObj()["0"].children.forEach(stageChild=>{
             this.stage.addChild(stageChild.pixiObj);
-        });
+        });*/
         this.stage.addChild(this.gizmoz);
     }
     createGizmos(){

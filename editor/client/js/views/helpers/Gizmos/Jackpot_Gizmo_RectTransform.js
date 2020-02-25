@@ -282,10 +282,6 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
         //this.debugging.drawRect( 20, 20, size[0]-40, size[1]-40);
 
 
-        parts.forEach(item=>{
-            item.clear();
-        });
-
         //Rectangle
         parts["rectangle_core"].hitArea = new PIXI.Rectangle(20, 20, size[0]-40, size[1]-40);
 
@@ -333,9 +329,17 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
         parts["pivot"].drawCircle(0,0, 11);
     }
 
+    erase(){
+        const keys = Object.keys(this.parts);
+        for (const key of keys){
+            this.parts[key].clear();
+        }
+    }
+
     update(){
         this.draw(this.selectedNode);
     }
+
 
 
     _setGraphicsLineStyle(graphics, thickness, color, filled){

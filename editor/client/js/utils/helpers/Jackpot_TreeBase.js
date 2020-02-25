@@ -3,14 +3,16 @@ export class Jackpot_NodeBase{
         this.isRoot = value.isRoot || false;
         this.id = value.id || "-1";
         this.parentId = value.parentId;
-        this.content = value.title;
+        this._content = value.title;
         this.type = value.type;
         this.isRoot = value.isRoot;
         this.children = value.children;
     }
-
-    rename(newName){
-        this.content = newName;
+    get content(){
+        return this._content;
+    }
+    set content(value){
+        this._content = value;
     }
 }
 
@@ -42,16 +44,14 @@ export class Jackpot_TreeBase {
 
 
     add(newNode){
-        this._maxId++;
-        newNode["id"] = (this._maxId).toString();
-        newNode["isRoot"] = false;
-
+        this._updateNodeId(newNode);
         this.traverse((node)=>{
             if(newNode.parentId === node.id){
                 node.children.push(newNode)
             }
         });
     }
+
 
     remove(nodeId){
         this.traverse((node)=>{
@@ -71,6 +71,15 @@ export class Jackpot_TreeBase {
             }
         });
         return nodeInTree;
+    }
+
+    _updateNodeId(node){
+        this._maxId++;
+        node["id"] = (this._maxId).toString();
+        node.children.forEach(child=>{
+            child.parentId = node.id;
+            this._updateNodeId(child);
+        });
     }
 
     getRoot(){
