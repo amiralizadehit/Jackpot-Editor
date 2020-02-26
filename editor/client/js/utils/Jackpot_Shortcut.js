@@ -11,6 +11,7 @@ export class Jackpot_Shortcut{
             switch (e.key) {
                 case "Delete":
                     console.log("Delete detected");
+                    e.preventDefault();
                     this.eventEmitter.emit(Jackpot_EventEmitter.ACTION_DELETE);
                     break;
                 case "Control":

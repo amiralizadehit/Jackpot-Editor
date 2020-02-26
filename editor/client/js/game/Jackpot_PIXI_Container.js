@@ -5,6 +5,19 @@ export default class Jackpot_PIXI_Container extends PIXI.Container{
         super();
         this.eventEmitter = new Jackpot_EventEmitter();
     }
+    clone(){
+        return new Jackpot_PIXI_Container();
+    }
+    clonePropertiesTo(target){
+        target.interactive = this.interactive;
+        target.visibility = this.visibility;
+        target.position.set(this.position.x, this.position.y);
+        target.scale.set(this.scale.x, this.scale.y);
+        target.rotation = this.rotation;
+        target.width = this.width;
+        target.height = this.height;
+        target.pivot.set(this.pivot.x, this.pivot.y);
+    }
 
     _setPosition(x, y, eventEmitter){
         this.position.set(x, y);
@@ -27,6 +40,13 @@ export default class Jackpot_PIXI_Container extends PIXI.Container{
         this.pivot.set(x, y);
         this.eventEmitter.emit(Jackpot_EventEmitter.NODE_PROPERTY_UPDATED, {"detail":{"emitter":eventEmitter}});
     }
-
+    _addChild(child, eventEmitter){
+        this.addChild(child);
+        this.eventEmitter.emit(Jackpot_EventEmitter.NODE_PROPERTY_UPDATED, {"detail":{"emitter":eventEmitter}});
+    }
+    _addChildAt(child, index, eventEmitter){
+        this.addChildAt(child,index);
+        this.eventEmitter.emit(Jackpot_EventEmitter.NODE_PROPERTY_UPDATED, {"detail":{"emitter":eventEmitter}});
+    }
 
 }

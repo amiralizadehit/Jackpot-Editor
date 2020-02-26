@@ -106,7 +106,7 @@ let scene = {
                             x: 0,
                             y: 0
                         },
-                        image: '/img/symbol_bird.png',
+                        image: 'symbol_bird.png',
                         anchor:{
                             x:0,
                             y:0
@@ -139,7 +139,7 @@ let scene = {
                             x: 0,
                             y: 0
                         },
-                        image: '/img/symbol_blue.png',
+                        image: 'symbol_blue.png',
                         anchor:{
                             x:0,
                             y:0
@@ -172,7 +172,7 @@ let scene = {
                             x: 0,
                             y: 0
                         },
-                        image: '/img/symbol_chest.png',
+                        image: 'symbol_chest.png',
                         anchor:{
                             x:0,
                             y:0
@@ -205,7 +205,7 @@ let scene = {
                             x: 0,
                             y: 0
                         },
-                        image: '/img/symbol_frog.png',
+                        image: 'symbol_frog.png',
                         anchor:{
                             x:0,
                             y:0
@@ -238,7 +238,7 @@ let scene = {
                             x: 0,
                             y: 0
                         },
-                        image: '/img/symbol_dagger.png',
+                        image: 'symbol_dagger.png',
                         anchor:{
                             x:0,
                             y:0
@@ -280,12 +280,14 @@ let scene = {
 };
 let game = {
     name: "relichunt",
+    imgFolder:"/img/",
     scenes: ["./scene.json"]
 };
 
 export default class Jackpot_IO {
     constructor(){
         GAME_INFO.name = game.name;
+        GAME_INFO.imgFolder = game.imgFolder;
         GAME_INFO.scene = scene;
     }
     loadGame(){

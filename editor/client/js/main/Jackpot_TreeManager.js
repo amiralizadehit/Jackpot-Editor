@@ -7,6 +7,8 @@ import {Jackpot_GameNode} from "../utils/Jackpot_GameTree.js";
 import {Jackpot_JSONNode} from "../utils/Jackpot_JSONTree.js";
 import Jackpot_AssetLoader from "../utils/Jackpot_AssetLoader.js";
 import Jackpot_EventEmitter from "../utils/Jackpot_EventEmitter.js";
+import {projectFolderURL} from "../utils/Jackpot_EditorConfiguration.js";
+import {GAME_INFO} from "../utils/Jackpot_GameInfo.js";
 
 
 
@@ -24,6 +26,7 @@ export default class Jackpot_TreeManager {
         //Building Tree Objects
         this.rawJSON = rawJSON;
         this.eventEmitter = new Jackpot_EventEmitter();
+        this.gameProjectURL = projectFolderURL + GAME_INFO.name;
         this._init();
     }
     _init(){
@@ -91,7 +94,12 @@ export default class Jackpot_TreeManager {
                         break;
                     }
                     case NodeTypes.SPRITE : {
-                        let texture = Jackpot_AssetLoader.getTexture(node.id);
+                        let finalURL = this.gameProjectURL + GAME_INFO.imgFolder + node.properties.image;
+                        newGameNode.sprite = {
+                            textureURL:finalURL,
+                            textureName:node.properties.image
+                        };
+                        let texture = Jackpot_AssetLoader.getTexture(finalURL);
                         if(!texture)
                             throw new Error("Texture not found!");
                         newGameNode.pixiObj = new Jackpot_PIXI_Sprite(texture);
@@ -163,8 +171,10 @@ export default class Jackpot_TreeManager {
                 break;
             case NodeTypes.SPRITE:
                 _GameTreeObj.add(newGameNode);
-                Jackpot_AssetLoader.addTextureToMapper(newGameNode.id, Jackpot_AssetLoader.TEXTURE_SPRITE_PLACEHOLDER);
-                let texture = Jackpot_AssetLoader.getTexture(newGameNode.id);
+                newGameNode.sprite = {
+                    textureURL:Jackpot_AssetLoader.TEXTURE_SPRITE_PLACEHOLDER
+                };
+                let texture = Jackpot_AssetLoader.getTexture(Jackpot_AssetLoader.TEXTURE_SPRITE_PLACEHOLDER);
                 if(!texture)
                     throw new Error("Texture not found!");
                 newGameNode.pixiObj = new Jackpot_PIXI_Sprite(texture);
@@ -174,8 +184,7 @@ export default class Jackpot_TreeManager {
         }
         _GameArrayObj[newGameNode.id]=newGameNode;
         this._setDisplayObjectProperties(null, newGameNode);
-        let parentNode = _GameArrayObj[newGameNode.parentId];
-        parentNode.pixiObj.addChild(newGameNode.pixiObj);
+        this._attachPixiObj(newGameNode);
         this.eventEmitter.emit(Jackpot_EventEmitter.NEW_OBJECT_CREATED,{"detail":newGameNode});
     }
 
@@ -190,14 +199,23 @@ export default class Jackpot_TreeManager {
     }
 
     _duplicateNode(node){
-        let clone = {...node};
-
-
+        let clone = node.clone();
         clone.content = `${node.content}_Clone`;
         _GameTreeObj.add(clone);
         this._addToArrayObjRecursively(clone);
-        _GameArrayObj[clone.parentId].pixiObj.addChild(clone.pixiObj);
-        this.eventEmitter.emit(Jackpot_EventEmitter.OBJECT_DUPLICATED, {"detail":clone});
+        this._attachPixiObj(clone);
+        this.eventEmitter.emit(Jackpot_EventEmitter.OBJECT_DUPLICATED, {"detail":{
+            clone:clone, reference:node
+            }});
+    }
+
+    _attachPixiObj(node){
+        let parentNode = _GameArrayObj[node.parentId];
+        if(parentNode.isRoot){ //stage
+            parentNode.pixiObj._addChildAt(node.pixiObj,parentNode.pixiObj.children.length-1,"other"); //before gizmo
+        }else{
+            parentNode.pixiObj._addChild(node.pixiObj,"other");
+        }
     }
 
     _addToArrayObjRecursively(node){

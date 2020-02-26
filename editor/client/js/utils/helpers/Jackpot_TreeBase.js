@@ -5,7 +5,6 @@ export class Jackpot_NodeBase{
         this.parentId = value.parentId;
         this._content = value.title;
         this.type = value.type;
-        this.isRoot = value.isRoot;
         this.children = value.children;
     }
     get content(){

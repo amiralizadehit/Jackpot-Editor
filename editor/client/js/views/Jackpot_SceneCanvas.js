@@ -46,9 +46,6 @@ export default class Jackpot_SceneCanvas extends Jackpot_Canvas{
     renderTree(){
         this.stage.removeChildren();
         this.stage = this.treeManager.getGameArrayObj()["0"].pixiObj;
-        /*this.treeManager.getGameArrayObj()["0"].children.forEach(stageChild=>{
-            this.stage.addChild(stageChild.pixiObj);
-        });*/
         this.stage.addChild(this.gizmoz);
     }
     createGizmos(){

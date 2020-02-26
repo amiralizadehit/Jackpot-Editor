@@ -86,8 +86,10 @@ export default class Jackpot_HierarchyPanelTree extends LiteGUI.Tree{
             });
         });
         this.eventEmitter.on(Jackpot_EventEmitter.OBJECT_DUPLICATED, e => {
-            this.insertItem(e.detail,e.detail.parentId,null,{selected:true});
-            this.eventEmitter.emit(Jackpot_EventEmitter.NODE_SELECTED, {detail: e.detail});
+            this.insertItem(e.detail.clone,e.detail.clone.parentId,
+                null,{
+                selected:true});
+            this.eventEmitter.emit(Jackpot_EventEmitter.NODE_SELECTED, {detail: e.detail.clone});
         });
     }
 
