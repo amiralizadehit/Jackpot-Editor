@@ -107,6 +107,9 @@ export default class Jackpot_TreeManager {
                         _GameTreeObj.add(newGameNode);
                         break;
                     }
+                    case NodeTypes.SPINE : {
+
+                    }
                     default : {
                         throw new Error("The game node type is not supported!");
                     }

@@ -274,7 +274,35 @@ let scene = {
                     y: 0
                 }
             },
-            children: []
+            children: [{
+                id: '9',
+                parentId: '8',
+                type: 'Spine',
+                content: 'dragon',
+                properties: {
+                    visible:true,
+                    position: {
+                        x: 400,
+                        y: 400
+                    },
+                    rotation: 0,
+                    scale: {
+                        x: 1,
+                        y: 1
+                    },
+                    skew: {
+                        x: 0,
+                        y: 0
+                    },
+                    pivot: {
+                        x: 0,
+                        y: 0
+                    },
+                    source: 'dragon/dragon.json',
+
+                },
+                children: []
+            }]
         }
     ]
 };
