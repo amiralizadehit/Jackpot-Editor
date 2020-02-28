@@ -1,16 +1,33 @@
 import Jackpot_PIXI_Container from "../../../game/Jackpot_PIXI_Container.js";
 import Jackpot_PIXI_Graphics from "../../../game/Jackpot_PIXI_Graphics.js";
 import TransformHelper from "../../../utils/helpers/Jackpot_TransformHelper.js";
+import {Jackpot_Shortcut} from "../../../utils/Jackpot_Shortcut.js";
+
+
+const LINE_CLIPPING = {
+    NONE:0,
+    VERTICAL  : 1,
+    HORIZONTAL: 2,
+    ORTHOGONAL_NEGATIVE: 3,
+    ORTHOGONAL_POSITIVE: 4,
+};
 
 export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container {
     constructor(renderer, stage) {
         super();
+        this.key = new Jackpot_Shortcut();
+
         this.parts = [];
         this.sceneRenderer = renderer;
         this.stage = stage;
         this.selectedNode = null;
         this.interactive = true;
-        this.rectangleHitAreaOffset = 20;
+
+        this.lineClipping={
+            margin:0.25,
+            type: LINE_CLIPPING.NONE
+        };
+
 
         this.parts["rectangle_core"] = new Jackpot_PIXI_Graphics();
         this.addChild(this.parts["rectangle_core"]);
@@ -35,7 +52,7 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
         this._init();
     }
     _init() {
-
+        this._addListeners();
         const keys = Object.keys(this.parts);
         for (let key of keys) {
             const object = this.parts[key];
@@ -133,13 +150,48 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
                             this._rectangleMouseDown(e, object);
                             object.mousemove = (e)=>{
                                 let posDiff = this._rectangleMouseMove(e);
-                                let localYPosition = posDiff[1];
-                                let localXPosition = posDiff[0];
+                                let xDistance = Math.abs(posDiff[0]);
+                                let yDistance = Math.abs(posDiff[1]);
                                 let cos = Math.cos(globalTransform[1] - pixiObj.rotation);
                                 let sin = Math.sin(globalTransform[1] - pixiObj.rotation);
+                                let localYPosition = posDiff[1];
+                                let localXPosition = posDiff[0];
+                                switch(this.lineClipping.type){
+                                    case LINE_CLIPPING.HORIZONTAL:
+                                        localYPosition = 0;
+                                        break;
+                                    case LINE_CLIPPING.VERTICAL:
+                                        localXPosition = 0;
+                                        break;
+                                    case LINE_CLIPPING.ORTHOGONAL_POSITIVE:
+                                        localYPosition = -localXPosition;
+                                        break;
+                                    case LINE_CLIPPING.ORTHOGONAL_NEGATIVE:
+                                        localYPosition = localXPosition;
+                                        break;
+                                    case LINE_CLIPPING.NONE:
+                                        if(this.key.shift){
+                                            let h = xDistance - yDistance;
+                                            if(h >= this.lineClipping.margin){
+                                                this.lineClipping.type = LINE_CLIPPING.HORIZONTAL;
+                                            }
+                                            else if(h <= -this.lineClipping.margin){
+                                                this.lineClipping.type = LINE_CLIPPING.VERTICAL;
+                                            }
+                                            else{
+                                                if((localXPosition>0 && localYPosition<0) || (localXPosition<0 && localYPosition>0))
+                                                    this.lineClipping.type = LINE_CLIPPING.ORTHOGONAL_POSITIVE;
+                                                else
+                                                    this.lineClipping.type = LINE_CLIPPING.ORTHOGONAL_NEGATIVE;
+                                            }
+                                        }
+                                        break;
+                                }
+                                let valueToBeAddedX = (localXPosition * cos + localYPosition * sin) / parentScale[0];
+                                let valueToBeAddedY = (localYPosition * cos - localXPosition * sin) / parentScale[1];
                                 pixiObj._setPosition(
-                                     pixiObj.position.x + (localXPosition * cos + localYPosition * sin) / parentScale[0]
-                                    ,pixiObj.position.y + (localYPosition * cos - localXPosition * sin) / parentScale[1],"gizmo");
+                                    pixiObj.position.x + valueToBeAddedX
+                                    ,pixiObj.position.y + valueToBeAddedY,"gizmo");
                                 this.update();
                             };
                         };
@@ -218,7 +270,7 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
                 object.buttonMode = true;
             }
         }
-        this.sceneRenderer.view.addEventListener("mouseup",(e) =>{
+        document.addEventListener("mouseup",(e) =>{
             if(this.busy){
                 this.busy = false;
                 this.focusedPart.mousemove = null;
@@ -232,6 +284,19 @@ export default class Jackpot_Gizmo_RectTransform extends Jackpot_PIXI_Container 
         this.debugging  = new PIXI.Graphics();
         this.addChild(this.debugging);
     }
+
+    _addListeners(){
+        this.key.addKeyUpListener((key)=>{
+            switch (key) {
+                case "Shift":
+                    this.lineClipping.type = LINE_CLIPPING.NONE;
+                    break;
+                case "Control":
+                    break;
+            }
+        })
+    }
+
     _calculateMagnitude(posDiff){
         return Math.sqrt(Math.pow(posDiff[0],2)+ Math.pow(posDiff[1],2));
     }

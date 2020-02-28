@@ -172,7 +172,8 @@ export default class Jackpot_TreeManager {
             case NodeTypes.SPRITE:
                 _GameTreeObj.add(newGameNode);
                 newGameNode.sprite = {
-                    textureURL:Jackpot_AssetLoader.TEXTURE_SPRITE_PLACEHOLDER
+                    textureURL:Jackpot_AssetLoader.TEXTURE_SPRITE_PLACEHOLDER,
+                    textureName: "placeholder_sprite.jpg"
                 };
                 let texture = Jackpot_AssetLoader.getTexture(Jackpot_AssetLoader.TEXTURE_SPRITE_PLACEHOLDER);
                 if(!texture)

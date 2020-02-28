@@ -37,14 +37,13 @@ export class Jackpot_GameNode extends Jackpot_NodeBase {
                 };
                 break;
         }
-        clone.inspector = new Jackpot_GOInspector(clone);
         this.children.forEach(child=>{
             let childClone = child._cloneRecursively();
             clone.children.push(childClone);
             clone.pixiObj.addChild(childClone.pixiObj);
         });
         this.pixiObj.clonePropertiesTo(clone.pixiObj);
-
+        clone.inspector = new Jackpot_GOInspector(clone);
         //Cloning Listeners
         if(this.pixiObj.mouseup){
             clone.pixiObj.mouseup = (e)=>{
