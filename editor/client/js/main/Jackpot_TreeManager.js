@@ -108,7 +108,14 @@ export default class Jackpot_TreeManager {
                         break;
                     }
                     case NodeTypes.SPINE : {
+                        let finalURL = this.gameProjectURL + GAME_INFO.spineFolder + node.properties.source;
+                        newGameNode.spine = {
+                            jsonURL:finalURL,
+                            jsonName:node.properties.source
+                        };
 
+
+                        break;
                     }
                     default : {
                         throw new Error("The game node type is not supported!");
@@ -120,10 +127,11 @@ export default class Jackpot_TreeManager {
 
                 if(newGameNode.pixiObj instanceof PIXI.DisplayObject){
                     this._setDisplayObjectProperties(node, newGameNode);
+                    if(newGameNode.pixiObj instanceof PIXI.Sprite){
+                        this._setSpriteObjectProperties(node, newGameNode)
+                    }
                 }
-                if(newGameNode.pixiObj instanceof PIXI.Sprite){
-                    this._setSpriteObjectProperties(node, newGameNode)
-                }
+
                 _GameArrayObj[node.id]=newGameNode;
             }
             else {

@@ -7,21 +7,23 @@ let _nodeResourceMapping = {};
 export default class Jackpot_AssetLoader{
 
     static markForLoading(node){
-        let projectURL = projectFolderURL + GAME_INFO.name + GAME_INFO.imgFolder;
+        let projectURL = projectFolderURL + GAME_INFO.name;
         let finalURL = "";
         switch (node.type) {
             case NodeTypes.SPRITE:
                 if(node.properties.image){
-                    finalURL = projectURL + node.properties.image;
+                    finalURL = projectURL + GAME_INFO.imgFolder + node.properties.image;
                 }
+                PIXI.Loader.shared.add(finalURL, finalURL);
                 break;
             case NodeTypes.SPINE:
                 if(node.properties.source){
-                    finalURL = projectURL + node.properties.source;
+                    finalURL = projectURL+ GAME_INFO.spineFolder + node.properties.source;
                 }
+                PIXI.Loader.shared.add(finalURL, finalURL);
                 break;
         }
-        PIXI.Loader.shared.add(finalURL, finalURL);
+
     }
 
     static loadNow(callback){

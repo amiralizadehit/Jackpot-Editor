@@ -274,7 +274,12 @@ let scene = {
                     y: 0
                 }
             },
-            children: [{
+            children: []
+        }
+    ]
+};
+/*
+* {
                 id: '9',
                 parentId: '8',
                 type: 'Spine',
@@ -302,13 +307,13 @@ let scene = {
 
                 },
                 children: []
-            }]
-        }
-    ]
-};
+            }*/
+
+
 let game = {
     name: "relichunt",
     imgFolder:"/img/",
+    spineFolder:"/spine/",
     scenes: ["./scene.json"]
 };
 
@@ -316,6 +321,7 @@ export default class Jackpot_IO {
     constructor(){
         GAME_INFO.name = game.name;
         GAME_INFO.imgFolder = game.imgFolder;
+        GAME_INFO.spineFolder = game.spineFolder;
         GAME_INFO.scene = scene;
     }
     loadGame(){

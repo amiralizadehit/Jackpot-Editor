@@ -18,9 +18,14 @@ export class Jackpot_Shortcut{
         document.addEventListener('keydown',(e)=>{
             switch (e.key) {
                 case "Delete":
-                    console.log("Delete detected");
                     e.preventDefault();
                     this._eventEmitter.emit(Jackpot_EventEmitter.ACTION_DELETE);
+                    break;
+                case "Backspace":
+                    if(this._ctrl){
+                        e.preventDefault();
+                        this._eventEmitter.emit(Jackpot_EventEmitter.ACTION_DELETE);
+                    }
                     break;
                 case "Control":
                     this._ctrl= true;
@@ -30,6 +35,7 @@ export class Jackpot_Shortcut{
                     break;
                 case "d":
                     if(this._ctrl){
+                        e.preventDefault();
                         this._eventEmitter.emit(Jackpot_EventEmitter.ACTION_DUPLICATE);
                     }
                     break;
@@ -44,6 +50,7 @@ export class Jackpot_Shortcut{
                     this._shift = false;
                     break;
             }
+            console.log(e);
             this._addKeyUpListeners.forEach(callback=>{
                 callback(e.key);
             })

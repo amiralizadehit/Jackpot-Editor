@@ -13,6 +13,11 @@ export default class Jackpot_MenuBar extends LiteGUI.Menubar{
         let settingsDialog = this._createSettingsDialog();
         settingsDialog.hide();
 
+
+        let customElement = document.createElement("li");
+        customElement.innerHTML = "<div>Jackpot Editor</div>";
+        this.content.appendChild(customElement);
+
         this.add("File/New");
         this.add("File/Settings", {
             callback: function() {
@@ -22,6 +27,11 @@ export default class Jackpot_MenuBar extends LiteGUI.Menubar{
         this.add("File/I'm not clickable", { disabled: true });
         this.add("Help/Help");
         this.add("Help/About");
+
+
+
+
+
     }
 
     _createSettingsDialog() {
